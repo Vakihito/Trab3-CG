@@ -931,7 +931,6 @@ while not glfw.window_should_close(window):
     desenha(s_x=0.8, s_y=0.8, s_z=0.8,t_y= 0, t_x=18, t_z=-13,  ka=1.0,kd=0.1,ks=0.0,modelDir="plant")
     desenha_chair(angle=90, r_y=1.0 ,r_z=0.0,s_x=0.04, s_y=0.04, s_z=0.04,  t_x=16, t_z=16, modelDir="chair");
     desenhaM2(angle=180, r_y=1.0,r_z=0.0,s_x=0.08, s_y=0.03, s_z=0.05,t_x=-13.5,t_y=1.0 ,t_z = -2.3, kd=0.4,ks=0.5, ns=30,  modelDir="cabinet")
-
     desenha(angle=-90 ,r_y=1.0,r_z=0.0,s_x=2.5,s_y=2.5,s_z=2.5,t_x= 5, t_z=-15, t_y= 2, ka=1.0, kd=0.01,ks=0.0,modelDir="bed")
     desenha(angle=90,r_y=0.1,r_z=0.0,  s_x=0.08, s_y=0.06, s_z=0.04,t_y=2.0,t_x=-12.5, t_z = -20.0,modelDir="cabinet")
     desenha(s_x=0.4, s_y=0.4, s_z=0.4, t_y=4.3,t_x=-18, t_z= 7,  ka=1.0,kd=0.001, ks=0.001, modelDir="plant")
