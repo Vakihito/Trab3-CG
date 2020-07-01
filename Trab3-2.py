@@ -320,7 +320,7 @@ processObjects("beagle", "beagle.obj", "beagle.jpg")
 processObjects2Textures("chair", "chair.obj", "chair1.jpg", "chair2.PNG")
 processObjects("cottage", "cottage.obj", "cottage2.png")
 processObjects("table1", "table1.obj", "table1.png")
-processObjects_no_normal("floor", "floor.obj", "floor.jpg")
+processObjects_no_normal("floor1", "floor.obj", "floor.jpg")
 processObjects2Textures("sofa", "sofa.obj", "white.PNG", "wood.jpg")
 processObjects("stool", "stool.obj", "stool.png")
 processObjects("plant", "plant.obj", "plant.jpg")
@@ -328,7 +328,10 @@ processObjects("tv", "tv.obj", "tv.png")
 processObjects("cabinet", "cabinet.obj", "cabinet.jpg")
 processObjects("bed", "bed1.obj", "Texture.png")
 processObjects("chair2", "chair2.obj", "chair2.jpg")
-processObjects2Textures("lamp", "lamp2.obj", "lamp.jpg", "luz.png")
+processObjects("luz", "caixa2.obj", "luz.png")
+processObjects("caixa", "caixa2.obj", "wood.jpg")
+processObjects("floor", "floor2.obj", "floor.jpg")
+
 
 
 
@@ -413,8 +416,8 @@ def desenha_lamp(angle=0.0,
             r_x=0.0, r_y=0.0, r_z=1.0,
             t_x=0.0, t_y=0.0, t_z=0.0,
             s_x=1.0, s_y=1.0, s_z=1.0,
-            modelDir="lamp"):
-    mat_model = model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
+            modelDir="luz"):
+    mat_model = model2(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
     loc_model = glGetUniformLocation(program, "model")
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
 
@@ -438,19 +441,11 @@ def desenha_lamp(angle=0.0,
     
     loc_light_pos = glGetUniformLocation(program, "lightPos1") # recuperando localizacao da variavel lightPos na GPU
     glUniform3f(loc_light_pos, t_x, t_y, t_z) ### posicao da fonte de luz
-    
-    #define id da textura do modelo
-    glBindTexture(GL_TEXTURE_2D, vertices_dict[modelDir][0])
-    glDrawArrays(GL_TRIANGLES, 1745787, 1830663 - 1745787) ## renderizando
 
-    #define id da textura do modelo
-    glBindTexture(GL_TEXTURE_2D, vertices_dict[modelDir][1])
-    glDrawArrays(GL_TRIANGLES, 1830663, 1865640 - 1830663) ## renderizando
-
+    glBindTexture(GL_TEXTURE_2D, vertices_dict[modelDir][2])
+    # desenha o modelo
+    glDrawArrays(GL_TRIANGLES, vertices_dict[modelDir][0], vertices_dict[modelDir][1] - vertices_dict[modelDir][0]) ## renderizando
     
-    #define id da textura do modelo
-    glBindTexture(GL_TEXTURE_2D, vertices_dict[modelDir][0])
-    glDrawArrays(GL_TRIANGLES, 1865640, 1890780 - 1865640) ## renderizando
     
 
 def desenha_sol(angle,
@@ -493,9 +488,6 @@ def desenha_sol(angle,
     # desenha o modelo
     glDrawArrays(GL_TRIANGLES, vertices_dict[modelDir][0], vertices_dict[modelDir][1] - vertices_dict[modelDir][0]) ## renderizando
 
-ka_common = 0.8
-kd_common = 0.25
-ks_common = 0.4
 def desenha_chaleira():
     
 
@@ -540,28 +532,58 @@ def desenha_chaleira():
 
 
 
+def sum_k(ka ,kd ,ks):
+    ka_aux = ka 
+    kd_aux = kd
+    ks_aux = ks
+
+    ka_aux += ka_add
+    kd_aux += kd_add
+    ks_aux += ks_add
+
+    if ka_aux + ka_add > 1:
+        ka_aux = 1
+
+    if kd_aux + kd_add > 1:
+        kd_aux = 1
+
+    if ks_aux + ks_add > 1:
+        ks_aux = 1
+    
+    if ka_aux + ka_add < 0:
+        ka_aux = 0
+        
+    if kd_aux + kd_add < 0:
+        kd_aux = 0
+    
+    if ks_aux + ks_add < 0:
+        ks_aux = 0
+    return (ka_aux, kd_aux, ks_aux)
+
+
 def desenha(angle=0.0, 
             r_x=0.0, r_y=0.0, r_z=1.0,
             t_x=0.0, t_y=0.0, t_z=0.0,
             s_x=1.0, s_y=1.0, s_z=1.0,
+            ka=0.8, kd=0.25, ks=0.2, ns= 36.0,
             modelDir=""):
     mat_model = model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
     loc_model = glGetUniformLocation(program, "model")
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
      #### define parametros de ilumincao do modelo
-
+    (ka, kd, ks) = sum_k(ka, kd, ks)
     
     loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
-    glUniform1f(loc_ka, ka_common) ### envia ka pra gpu
+    glUniform1f(loc_ka, ka) ### envia ka pra gpu
     
     loc_kd = glGetUniformLocation(program, "kd") # recuperando localizacao da variavel kd na GPU
-    glUniform1f(loc_kd, kd_common) ### envia kd pra gpu    
+    glUniform1f(loc_kd, kd) ### envia kd pra gpu    
 
-    # loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
-    # glUniform1f(loc_ks, ks_common) ### envia ks pra gpu        
+    loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
+    glUniform1f(loc_ks, ks) ### envia ks pra gpu        
     
-    # loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
-    # glUniform1f(loc_ns, ns) ### envia ns pra gpu        
+    loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
+    glUniform1f(loc_ns, ns) ### envia ns pra gpu        
 
 
 
@@ -575,11 +597,27 @@ def desenha_no_light(angle=0.0,
             r_x=0.0, r_y=0.0, r_z=1.0,
             t_x=0.0, t_y=0.0, t_z=0.0,
             s_x=1.0, s_y=1.0, s_z=1.0,
+            ka=0.8, kd=0.25, ks=0.2, ns= 36.0,
             modelDir=""):
     mat_model = model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
     loc_model = glGetUniformLocation(program, "model")
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
     #define id da textura do modelo
+    (ka, kd, ks) = sum_k(ka, kd, ks)
+
+    loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
+    glUniform1f(loc_ka, ka) ### envia ka pra gpu
+    
+    loc_kd = glGetUniformLocation(program, "kd") # recuperando localizacao da variavel kd na GPU
+    glUniform1f(loc_kd, kd) ### envia kd pra gpu    
+
+    loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
+    glUniform1f(loc_ks, ks) ### envia ks pra gpu        
+    
+    loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
+    glUniform1f(loc_ns, ns) ### envia ns pra gpu        
+
+
     glBindTexture(GL_TEXTURE_2D, vertices_dict[modelDir][2])
     # desenha o modelo
     glDrawArrays(GL_TRIANGLES, vertices_dict[modelDir][0], vertices_dict[modelDir][1] - vertices_dict[modelDir][0]) ## renderizando
@@ -590,17 +628,25 @@ def desenhaM2(angle=0.0,
             r_x=0.0, r_y=0.0, r_z=1.0,
             t_x=0.0, t_y=0.0, t_z=0.0,
             s_x=1.0, s_y=1.0, s_z=1.0,
+            ka=0.8, kd=0.25, ks=0.7, ns= 36.0,
             modelDir=""):
     mat_model = model2(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
     loc_model = glGetUniformLocation(program, "model")
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
     #define id da textura do modelo
+    (ka, kd, ks) = sum_k(ka, kd, ks)
 
     loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
-    glUniform1f(loc_ka, ka_common) ### envia ka pra gpu
+    glUniform1f(loc_ka, ka) ### envia ka pra gpu
     
     loc_kd = glGetUniformLocation(program, "kd") # recuperando localizacao da variavel kd na GPU
-    glUniform1f(loc_kd, kd_common) ### envia kd pra gpu    
+    glUniform1f(loc_kd, kd) ### envia kd pra gpu    
+
+    loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
+    glUniform1f(loc_ks, ks) ### envia ks pra gpu        
+    
+    loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
+    glUniform1f(loc_ns, ns) ### envia ns pra gpu        
     
         
     
@@ -615,17 +661,25 @@ def desenha_chair(angle=0.0,
             r_x=0.0, r_y=0.0, r_z=1.0,
             t_x=0.0, t_y=0.0, t_z=0.0,
             s_x=1.0, s_y=1.0, s_z=1.0,
+            ka=0.8, kd=0.25, ks=0.2, ns= 36.0,
             modelDir=""):
     mat_model = model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
     loc_model = glGetUniformLocation(program, "model")
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
+    (ka, kd, ks) = sum_k(ka, kd, ks)
     
     
     loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
-    glUniform1f(loc_ka, ka_common) ### envia ka pra gpu
+    glUniform1f(loc_ka, ka) ### envia ka pra gpu
     
     loc_kd = glGetUniformLocation(program, "kd") # recuperando localizacao da variavel kd na GPU
-    glUniform1f(loc_kd, kd_common) ### envia kd pra gpu    
+    glUniform1f(loc_kd, kd) ### envia kd pra gpu    
+
+    loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
+    glUniform1f(loc_ks, ks) ### envia ks pra gpu        
+    
+    loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
+    glUniform1f(loc_ns, ns) ### envia ns pra gpu        
 
 
     #define id da textura do modelo
@@ -648,16 +702,26 @@ def desenha_sofa(angle=0.0,
             r_x=0.0, r_y=0.0, r_z=1.0,
             t_x=0.0, t_y=0.0, t_z=0.0,
             s_x=1.0, s_y=1.0, s_z=1.0,
+            ka=0.8, kd=0.25, ks=0.2, ns= 36.0,
             modelDir="sofa"):
     mat_model = model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
     loc_model = glGetUniformLocation(program, "model")
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
+
+    (ka, kd, ks) = sum_k(ka, kd, ks)
     
+
     loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
-    glUniform1f(loc_ka, ka_common) ### envia ka pra gpu
+    glUniform1f(loc_ka, ka) ### envia ka pra gpu
     
     loc_kd = glGetUniformLocation(program, "kd") # recuperando localizacao da variavel kd na GPU
-    glUniform1f(loc_kd, kd_common) ### envia kd pra gpu    
+    glUniform1f(loc_kd, kd) ### envia kd pra gpu    
+
+    loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
+    glUniform1f(loc_ks, ks) ### envia ks pra gpu        
+    
+    loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
+    glUniform1f(loc_ns, ns) ### envia ns pra gpu   
 
     
     #define id da textura do modelo
@@ -670,83 +734,51 @@ def desenha_sofa(angle=0.0,
     glBindTexture(GL_TEXTURE_2D, vertices_dict[modelDir][1])
     glDrawArrays(GL_TRIANGLES, c, 837771 - c) ## renderizando
 
-ks_tv = 0.5
-def desenha_tv(angle=0.0, 
-            r_x=0.0, r_y=0.0, r_z=1.0,
-            t_x=0.0, t_y=0.0, t_z=0.0,
-            s_x=1.0, s_y=1.0, s_z=1.0,
-            modelDir="tv"):
-    mat_model = model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
-    loc_model = glGetUniformLocation(program, "model")
-    glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
-     #### define parametros de ilumincao do modelo
-
-    
-    loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
-    glUniform1f(loc_ka, ka_common) ### envia ka pra gpu
-    
-    loc_kd = glGetUniformLocation(program, "kd") # recuperando localizacao da variavel kd na GPU
-    glUniform1f(loc_kd, kd_common) ### envia kd pra gpu    
-
-    ns = 32.0
-    loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
-    glUniform1f(loc_ks, ks_tv) ### envia ks pra gpu        
-    
-    loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
-    glUniform1f(loc_ns, ns) ### envia ns pra gpu        
-
-
-
-    
-    #define id da textura do modelo
-    glBindTexture(GL_TEXTURE_2D, vertices_dict[modelDir][2])
-    # desenha o modelo
-    glDrawArrays(GL_TRIANGLES, vertices_dict[modelDir][0], vertices_dict[modelDir][1] - vertices_dict[modelDir][0]) ## renderizando
 
 
 
 
 
-cameraPos   = glm.vec3( 0.0,      5.0,   0.0);
+cameraPos   = glm.vec3( 0.0,      8.0,   0.0);
 cameraFront = glm.vec3( 0.0,    0.0,     0.0);
 cameraUp    = glm.vec3(0.0,  1.0,  0.0);
 
 
 polygonal_mode = False
 
+ka_add = 0.0
+kd_add = 0.0
+ks_add = 0.0
+
 def key_event(window,key,scancode,action,mods):
     global cameraPos, cameraFront, cameraUp, polygonal_mode
-    global ka_common, kd_common, ks_common
+    global ka_add, kd_add, ks_add
 
     loc_light_pos = glGetUniformLocation(program, "lightPos1") # recuperando localizacao da variavel lightPos na GPU
     print( "loc_light_pos : ", loc_light_pos);
     
     if key == 49 and (action==1 or action==2): # tecla 1
-        if ka_common < 1:
-            ka_common  += 0.01
+        ka_add  += 0.01
     if key == 50 and (action==1 or action==2): # tecla 2
-        if ka_common > 0:
-            ka_common -= 0.01
+        ka_add -= 0.01
             
     
     if key == 51 and (action==1 or action==2): # tecla 3
-        if kd_common < 1:
-            kd_common += 0.01
+        kd_add += 0.01
     if key == 52 and (action==1 or action==2): # tecla 4
-        if kd_common > 0:
-            kd_common -= 0.01
+        kd_add -= 0.01
     
 
     if key == 53 and (action==1 or action==2): # tecla 5
-        if ks_common < 1:
-            ks_common += 0.01
+        ks_add += 0.01
     if key == 54 and (action==1 or action==2): # tecla 6
-        if ks_common > 0:
-            ks_common -= 0.01
-    print("ka : ", ka_common)
-    print("kd : ", kd_common)
-    print("ks : ", ks_common)
+        ks_add -= 0.01
     
+    print("ka : " , ka_add)
+    print("kd : " , kd_add)
+    print("ks : " , ks_add)
+
+
 
     cameraSpeed = 1.0
     if key == 87 and (action==1 or action==2): # tecla W
@@ -883,29 +915,30 @@ while not glfw.window_should_close(window):
     
      # interior da casa
     
+    # ka=0.8, kd=0.25, ks=0.2, ns= 36.0,
 
-
-    desenha(s_x=0.005, s_y=0.005, s_z=0.005,t_x =-4, t_z=-19.8, modelDir="aya");
-    desenha_no_light(s_x=20, s_y=20, s_z=20, t_z = -10,t_y= 0,modelDir="floor")
-    desenha_no_light(s_x=6, s_y=6, s_z=6, t_x = -14,t_z= 13,modelDir="floor")    
-    desenha_chair(s_x=0.04, s_y=0.04, s_z=0.04,t_x =-4 ,t_z=-20, modelDir="chair");
-    desenha(angle=-90,r_x=1.0 ,r_z=0.0,s_x=0.05, s_y=0.05, s_z=0.05,t_y= -6, t_z=0,modelDir="beagle")
-    desenha(s_x=3.58, s_y=5, s_z=4,t_x= -0.7, t_y = -2,t_z= -8, modelDir="cottage")
-    desenha(angle=-90, r_y=1.0 ,r_z=0.0, s_x=0.013, s_y=0.013, s_z=0.013, t_y= 3, t_x=-18, t_z=-18,modelDir="table1")
-    desenha_sofa(s_x=0.05, s_y=0.05, s_z=0.05, t_x=-17, t_y = 4,t_z=-22 ,modelDir="sofa")
-    desenha(s_x=2, s_y=0.5, s_z=2, t_x=-13.5, t_z = -14, modelDir="stool")
-    desenha(s_x=0.4, s_y=0.4, s_z=0.4,t_x=-13.5, t_y= 2 ,t_z = -14,modelDir="plant")
-    desenha(s_x=0.8, s_y=0.8, s_z=0.8,t_y= 0, t_x=18, t_z=-13,modelDir="plant")
+    desenha(s_x=0.005, s_y=0.005, s_z=0.005,t_x =-4, t_z=-19.8,ka=1.0,  kd=0.01,ks=0.0, modelDir="aya");
+    desenha(s_x=20, s_y=20, s_z=20, t_z = -10,t_y= 0.0001, ka= 1.0,kd=0.0, ks=0.6 ,modelDir="floor")
+    desenha(s_x=6, s_y=6, s_z=6, t_x = -14,t_z= 13, ka= 1.0,kd=0.0, ks=0.6,modelDir="floor")    
+    desenha_chair(s_x=0.04, s_y=0.04, s_z=0.04,t_x =-4 ,t_z=-20, ks=0.0 ,modelDir="chair");
+    desenha(angle=-90,r_x=1.0 ,r_z=0.0,s_x=0.05, s_y=0.05, s_z=0.05,t_y= -6, t_z=0,kd=0.5,modelDir="beagle")
+    desenha(s_x=3.58, s_y=5, s_z=4,t_x= -0.7, t_y = -2,t_z= -8, ks=0.0, modelDir="cottage")
+    desenha(angle=-90, r_y=1.0 ,r_z=0.0, s_x=0.013, s_y=0.013, s_z=0.013, t_y= 3, t_x=-18, t_z=-18,ka=1.0,kd=0.5 ,modelDir="table1")
+    desenha_sofa(s_x=0.05, s_y=0.05, s_z=0.05, t_x=-17, t_y = 4,t_z=-22, ka=0.8, kd=0.15, ks=0.0 ,modelDir="sofa")
+    desenha(s_x=2, s_y=0.5, s_z=2, t_x=-13.5, t_z = -14, ka=0.95 ,kd=0.0, ks=0.9 , ns=36.0 , modelDir="stool")
+    desenha(s_x=0.32, s_y=0.3, s_z=0.32,t_x=-13.5, t_y= 2.2, t_z= -14,modelDir="caixa")
+    desenha_lamp(angle=180, r_x=1.0,r_z=0.0, s_x=0.3, s_y=0.3, s_z=0.3,t_x=-13.5, t_y= 2.7, t_z= -14,modelDir="luz")
+    desenha(s_x=0.8, s_y=0.8, s_z=0.8,t_y= 0, t_x=18, t_z=-13,  ka=1.0,kd=0.1,ks=0.0,modelDir="plant")
     desenha_chair(angle=90, r_y=1.0 ,r_z=0.0,s_x=0.04, s_y=0.04, s_z=0.04,  t_x=16, t_z=16, modelDir="chair");
-    desenha(s_x=0.08, s_y=0.06, s_z=0.05,t_x=-13.5, t_z = -5,modelDir="cabinet")
-    desenha(angle=-90 ,r_y=1.0,r_z=0.0,s_x=2.5,s_y=2.5,s_z=2.5,t_x= 5, t_z=-15, t_y= 2,modelDir="bed")
+    desenhaM2(angle=180, r_y=1.0,r_z=0.0,s_x=0.08, s_y=0.03, s_z=0.05,t_x=-13.5,t_y=1.0 ,t_z = -2.3, kd=0.4,ks=0.5, ns=30,  modelDir="cabinet")
+
+    desenha(angle=-90 ,r_y=1.0,r_z=0.0,s_x=2.5,s_y=2.5,s_z=2.5,t_x= 5, t_z=-15, t_y= 2, ka=1.0, kd=0.01,ks=0.0,modelDir="bed")
     desenha(angle=90,r_y=0.1,r_z=0.0,  s_x=0.08, s_y=0.06, s_z=0.04,t_y=2.0,t_x=-12.5, t_z = -20.0,modelDir="cabinet")
-    desenha(s_x=0.4, s_y=0.4, s_z=0.4, t_y=4.3,t_x=-18, t_z= 7,modelDir="plant")
-    desenha(s_x=0.4, s_y=0.4, s_z=0.4, t_y=4.3,t_x=-18, t_z= 16,modelDir="plant")
-    desenha(angle=-90,r_y=0.1,r_z=0.0,  s_x=1.1, s_y=1.1, s_z=1.1,t_x=12.5,  t_z = 16,modelDir="chair2")
-    desenha(angle=-90,r_y=0.1,r_z=0.0,  s_x=1.1, s_y=1.1, s_z=1.1,t_x=10,  t_z = 16,modelDir="chair2")
-    desenha_tv(angle=180, r_y=1.0,r_z=0.0, t_x=13.5, t_y= 2.3,t_z = 4, modelDir="tv")
-    desenha_lamp(t_y= 27, t_z=-6.5,modelDir="lamp")
+    desenha(s_x=0.4, s_y=0.4, s_z=0.4, t_y=4.3,t_x=-18, t_z= 7,  ka=1.0,kd=0.001, ks=0.001, modelDir="plant")
+    desenha(s_x=0.4, s_y=0.4, s_z=0.4, t_y=4.3,t_x=-18, t_z= 16, ka=1.0,kd=0.001, ks=0.001, modelDir="plant")
+    desenha(angle=-90,r_y=0.1,r_z=0.0,  s_x=1.1, s_y=1.1, s_z=1.1,t_x=12.5,  t_z = 16,ka=1.0, kd=0.01,modelDir="chair2")
+    desenha(angle=-90,r_y=0.1,r_z=0.0,  s_x=1.1, s_y=1.1, s_z=1.1,t_x=10,  t_z = 16,ka=1.0, kd=0.01 ,modelDir="chair2")
+    desenha(angle=180, r_y=1.0,r_z=0.0, t_x=13.5, t_y= 2.1,t_z=4, ka=0.5, kd=0.7,ks=1.0,ns=56.0, modelDir="tv")
 
     
     mat_view = view()
