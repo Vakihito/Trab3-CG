@@ -344,16 +344,16 @@ def processObjects2Textures(dir, objFile, imageFile1, imageFile2):
 # exterior da casa
 ################################################################
 
-processObjects_no_normal("grass", "terreno2.obj", "grass.jpeg")
-processObjects_no_normal("street", "terreno2.obj", "street.jpg")
-processObjects_no_normal("water", "water.obj", "water5.jpg")
+processObjects("grass", "terreno2.obj", "grass.jpeg")
+processObjects("street", "terreno2.obj", "street.jpg")
+processObjects("water", "water.obj", "water5.jpg")
 processObjects("car", "car.obj", "car.jpg")
 processObjects("dogh", "doghouse.obj", "2_BaseColor.jpg")
 processObjects("ball", "ball.obj", "ball.jpg")
 processObjects("doberman", "dog2.obj", "Doberman_Pinscher_dif.jpg")
 processObjects("cat", "cat.obj", "Cat_bump.jpg")
 processObjects("sky", "terreno.obj", "sky2.jpg")
-processObjects_no_normal("cobleStone", "floor.obj", "cobleStone.jpg")
+processObjects("cobleStone", "floor.obj", "cobleStone.jpg")
 processObjects("dolphin", "dolphin1.obj", "dolphin.jpg")
 processObjects("whale", "whale2.obj", "10054_Whale_Diffuse_v2.jpg")
 processObjects("plane1", "plane1.obj", "plane1.jpg")
@@ -744,6 +744,11 @@ def key_event(window,key,scancode,action,mods):
     
     if key == 83 and (action==1 or action==2): # tecla S
         cameraPos -= cameraSpeed * cameraFront
+
+    if cameraPos[1] > 89.8:
+        cameraPos = glm.vec3((cameraPos[0], 89.8, cameraPos[2]))
+    elif cameraPos[1] < -1.8:
+        cameraPos = glm.vec3((cameraPos[0], -1.8, cameraPos[2]))
     
     if key == 65 and (action==1 or action==2): # tecla A
         cameraPos -= glm.normalize(glm.cross(cameraFront, cameraUp)) * cameraSpeed
@@ -926,7 +931,7 @@ while not glfw.window_should_close(window):
     # interior da casa
 
 
-    # desenha(s_x=0.005, s_y=0.005, s_z=0.005,t_x =-4, t_z=-19.8,ka=0.8,  kd=0.5,ks=0.2, modelDir="aya");
+    # desenha(s_x=0.005, s_y=0.005, s_z=0.005,t_x =-4, t_z=-19.8,ka=1.0,  kd=0.1,ks=0.0, modelDir="aya");
     # desenha(s_x=20, s_y=20, s_z=20, t_z = -10,t_y= 0.0001, ka= 1.0,kd=0.2, ks=0.6 ,modelDir="floor")
     # desenha(s_x=6, s_y=6, s_z=6, t_x = -14,t_z= 13, ka= 1.0,kd=0.0, ks=0.0,modelDir="floor")    
     # desenha_chair(s_x=0.04, s_y=0.04, s_z=0.04,t_x =-4 ,t_z=-20, kd=0.5, ks=0.0 ,modelDir="chair");
@@ -954,73 +959,73 @@ while not glfw.window_should_close(window):
     #exterior da casa
 
 
-    # desenha(s_x=140, s_y=140, s_z=140, t_z=-40 , t_y = -2,modelDir="grass")
-    # desenha(s_x=10, s_z= 20, t_z= -50, t_y= -1.8,modelDir= "cobleStone")
-    # desenha(s_x=140, s_y=140, s_z=140, t_z=-40 , t_y = 90, ka=0.1, kd=0.5, ks=1.0, ns=20.0 , modelDir="sky")  
+    desenha(s_x=140, s_y=140, s_z=140, t_z=-40 , t_y = -2,modelDir="grass")
+    desenha(s_x=10, s_z= 20, t_z= -50, t_y= -1.8,modelDir= "cobleStone")
+    desenha(s_x=140, s_y=140, s_z=140, t_z=-40 , t_y = 90, ka=0.1, kd=0.5, ks=1.0, ns=20.0 , modelDir="sky")  
 
-    # if  sun_angle > 360:
-    #     sun_angle = 0.0
-    # sun_angle += 0.3;
+    if  sun_angle > 360:
+        sun_angle = 0.0
+    sun_angle += 0.3;
 
-    # desenha_sun(angle =sun_angle * 3, r_y=1.0, r_z=0.0, s_x= 3.0 ,s_y=3.0 ,s_z=3.0, t_z = -70 + 100 * math.sin(math.radians(sun_angle)) + 50, t_x = 100 * math.cos(math.radians(sun_angle)) ,t_y = 80, modelDir="sun")
+    desenha_sun(angle =sun_angle * 3, r_y=1.0, r_z=0.0, s_x= 3.0 ,s_y=3.0 ,s_z=3.0, t_z = -70 + 100 * math.sin(math.radians(sun_angle)) + 50, t_x = 100 * math.cos(math.radians(sun_angle)) ,t_y = 80, modelDir="sun")
 
-    # desenha(angle = 90 , r_z= 0 ,r_y = 1,s_x=140.0, s_z=14.0, t_z = -40, t_x = 40 ,t_y = -1.8, modelDir="street")
-    # desenha(angle = 90 , r_z= 0 ,r_y = 1,s_x=140.0, s_z=20.0, t_z = 50, t_x = 40 ,t_y = -1.8, modelDir="water")
+    desenha(angle = 90 , r_z= 0 ,r_y = 1,s_x=140.0, s_z=14.0, t_z = -40, t_x = 40 ,t_y = -1.8, modelDir="street")
+    desenha(angle = 90 , r_z= 0 ,r_y = 1,s_x=140.0, s_z=20.0, t_z = 50, t_x = 40 ,t_y = -1.8, modelDir="water")
   
-    # # desenhando golfinhos
+    # desenhando golfinhos
 
-    # if  dolphin_position < -150:
-    #     dolphin_position = 40
-    # dolphin_position -= 0.19
-    # ydp = fish_move(dolphin_position, 5, 40, True)
-    # desenhaM2(angle= angle_dolphin,r_x=1.0,r_z = 0.0 ,s_x=1.1, s_y=1.1, s_z=1.1,t_z = dolphin_position , t_x = 45 ,t_y = -2.0 + ydp , ka=1.0, kd=0.01, ks=0.0, modelDir="dolphin")
-    # desenhaM2(angle= angle_dolphin,r_x=1.0,r_z = 0.0 ,s_x=1.1, s_y=1.1, s_z=1.1,t_z = dolphin_position + 10, t_x = 40 ,t_y = -2.0 + ydp , ka=1.0, kd=0.01, ks=0.0 , modelDir="dolphin")
+    if  dolphin_position < -150:
+        dolphin_position = 40
+    dolphin_position -= 0.19
+    ydp = fish_move(dolphin_position, 5, 40, True)
+    desenhaM2(angle= angle_dolphin,r_x=1.0,r_z = 0.0 ,s_x=1.1, s_y=1.1, s_z=1.1,t_z = dolphin_position , t_x = 45 ,t_y = -2.0 + ydp , ka=0.8, kd=0.2,  ks=1.0, ns=70.0, modelDir="dolphin")
+    desenhaM2(angle= angle_dolphin,r_x=1.0,r_z = 0.0 ,s_x=1.1, s_y=1.1, s_z=1.1,t_z = dolphin_position + 10, t_x = 40 ,t_y = -2.0 + ydp , ka=0.8, kd=0.2,  ks=1.0, ns=70.0, modelDir="dolphin")
 
-    # # desenha baleia
+    # desenha baleia
 
-    # if  whale_position < -150:
-    #     whale_position = 40
-    # whale_position -= 0.1
-    # ydw = fish_move(whale_position, 1, 40, False)
-    # desenhaM2(angle=90,r_x=0.0,r_y = 1, r_z = 0 ,s_x=0.2, s_y=0.2, s_z=0.2,t_z = whale_position , t_x = 55 ,t_y = -2.5 + ydw , ka=1.0, kd=0.01, ks=0.0 , modelDir="whale")
+    if  whale_position < -150:
+        whale_position = 40
+    whale_position -= 0.1
+    ydw = fish_move(whale_position, 1, 40, False)
+    desenhaM2(angle=90,r_x=0.0,r_y = 1, r_z = 0 ,s_x=0.2, s_y=0.2, s_z=0.2,t_z = whale_position , t_x = 55 ,t_y = -2.5 + ydw , ka=0.5, kd=0.4, ks=1.0, ns=70.0 , modelDir="whale")
 
 
-    # # desenhando os aviões
-    # anglePlane += 1
-    # if anglePlane > 360:
-    #     anglePlane = 0.0
+    # desenhando os aviões
+    anglePlane += 1
+    if anglePlane > 360:
+        anglePlane = 0.0
 
-    # anglePlane2 = anglePlane + 90
-    # (planex1, planey2) = elipse( 50 , 40, anglePlane)
-    # desenhaM2(angle=anglePlane,r_y=1.0,r_z=0,t_y= 40 + 10 * math.sin(math.radians(1.5 * anglePlane)), t_x = 5  + planex1, t_z=-70 + planey2,ka=1.0, kd=0.01 ,  modelDir="plane1")
+    anglePlane2 = anglePlane + 90
+    (planex1, planey2) = elipse( 50 , 40, anglePlane)
+    desenhaM2(angle=anglePlane,r_y=1.0,r_z=0,t_y= 40 + 10 * math.sin(math.radians(1.5 * anglePlane)), t_x = 5  + planex1, t_z=-70 + planey2,ka=1.0, kd=0.5, ks=0.0 ,  modelDir="plane1")
     
-    # (planex1, planey2) = elipse( 50 , 40, anglePlane2)
-    # desenhaM2(angle=anglePlane2, s_z=0.7, s_y=0.7, s_x=0.7 ,r_y=1.0,r_z=0,t_y= 40 + 8 * math.sin(math.radians(1.5 * anglePlane)), t_x = 5  + planex1, t_z=-70 + planey2, ka=1.0, kd=0.01 ,modelDir="plane2")
+    (planex1, planey2) = elipse( 50 , 40, anglePlane2)
+    desenhaM2(angle=anglePlane2, s_z=0.7, s_y=0.7, s_x=0.7 ,r_y=1.0,r_z=0,t_y= 40 + 8 * math.sin(math.radians(1.5 * anglePlane)), t_x = 5  + planex1, t_z=-70 + planey2, ka=1.0, kd=0.5, ks=0.9, ns=60.0 ,modelDir="plane2")
     
-
-    
-    # # desenha container
-    # desenhaM2( s_z=0.8,s_y=0.6,s_x=0.8, t_y=4.8,t_x=5 , t_z= -100 ,ka=0.6, kd=0.5, ks=1.0, ns=100.0, modelDir="container")
-    # desenhaM2( s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=-2 , t_z= -90 ,ka=1.0,kd=0.01, ks=0.0, ns=0.0, modelDir="librarian")
-    # desenhaM2(angle=180,r_y=1.0,r_z=0.0, s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=12, t_z= -90 , ka=1.0, kd=0.01, ks=0.0, ns=0.0, modelDir="librarian")
-
-
-    # # Faz a bola quicar
-    # if ball_position > 3:
-    #     x_ball_postion = -0.1;
-    # elif ball_position < -3:
-    #     x_ball_postion = 0.1;
-    # ball_position += x_ball_postion
-
-    # desenha(s_x=0.2, s_y=0.2, s_z=0.2,t_z= -55, t_x = 20 , t_y= ball_move(),  ka=1.0, kd=0.01, ks=0.0, ns=0.0, modelDir="ball")
 
     
-    # # movendo o carro
-    # if car_position < -125:
-    #     car_position = 40
-    # car_position -= 1
+    # desenha container
+    desenhaM2( s_z=0.8,s_y=0.6,s_x=0.8, t_y=4.8,t_x=5 , t_z= -100 ,ka=0.6, kd=0.5, ks=1.0, ns=100.0, modelDir="container")
+    desenhaM2( s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=-2 , t_z= -90 ,ka=1.0,kd=0.3, modelDir="librarian")
+    desenhaM2(angle=180,r_y=1.0,r_z=0.0, s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=12, t_z= -90 , ka=1.0, kd=0.3, modelDir="librarian")
 
-    # desenha(s_x=3.0, s_y=3.0 ,s_z=3.0, t_z = car_position, t_x = -33 ,t_y = -1.8,  ka=1.0, kd=0.01, ks=0.0, ns=0.0,  modelDir="car")    
+
+    # Faz a bola quicar
+    if ball_position > 3:
+        x_ball_postion = -0.1;
+    elif ball_position < -3:
+        x_ball_postion = 0.1;
+    ball_position += x_ball_postion
+
+    desenha(s_x=0.2, s_y=0.2, s_z=0.2,t_z= -55, t_x = 20 , t_y= ball_move(),  ka=1.0, kd=0.3, ks=0.9, ns=40.0, modelDir="ball")
+
+    
+    # movendo o carro
+    if car_position < -125:
+        car_position = 40
+    car_position -= 1
+
+    desenha(s_x=3.0, s_y=3.0 ,s_z=3.0, t_z = car_position, t_x = -33 ,t_y = -1.8,  ka=1.0, kd=0.3, ks=0.9, ns=40.0,  modelDir="car")    
 
 
 
