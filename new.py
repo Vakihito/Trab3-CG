@@ -8,9 +8,9 @@ from PIL import Image
 
 glfw.init()
 glfw.window_hint(glfw.VISIBLE, glfw.FALSE);
-altura = 1600
+altura = 1200
 largura = 1200
-window = glfw.create_window(largura, altura, "Iluminação", None, None)
+window = glfw.create_window(largura, altura, "Trabalho 3", None, None)
 glfw.make_context_current(window)
 
 vertex_code = """
@@ -37,16 +37,32 @@ vertex_code = """
 
 fragment_code = """
 
-        // parametros da iluminacao ambiente e difusa
-        uniform vec3 lightPos1; // define coordenadas de posicao da luz #1
-        uniform vec3 lightPos2; // define coordenadas de posicao da luz #2
-        uniform float ka; // coeficiente de reflexao ambiente
-        uniform float kd; // coeficiente de reflexao difusa
-        
-        // parametros da iluminacao especular
         uniform vec3 viewPos; // define coordenadas com a posicao da camera/observador
-        uniform float ks; // coeficiente de reflexao especular
-        uniform float ns; // expoente de reflexao especular
+
+
+
+        // parametros da iluminacao ambiente e difusa
+
+        uniform vec3 lightPos1; // define coordenadas de posicao da luz #1
+        uniform float ka_i; // coeficiente de reflexao ambiente interior
+        uniform float kd_i; // coeficiente de reflexao difusa exterior
+        uniform float ks_i; // coeficiente de reflexao especular
+        uniform float ns_i; // expoente de reflexao especular
+        
+        
+
+
+
+
+        // parametros da iluminacao especular
+
+        uniform vec3 lightPos2; // define coordenadas de posicao da luz #2
+        uniform float ka_e; // coeficiente de reflexao ambiente interior
+        uniform float kd_e; // coeficiente de reflexao difusa exterior
+        uniform float ks_e; // coeficiente de reflexao ambiente interior
+        uniform float ns_e; // coeficiente de reflexao difusa exterior
+
+
         
         // parametro com a cor da(s) fonte(s) de iluminacao
         vec3 lightColor = vec3(1.0, 1.0, 1.0);
@@ -60,42 +76,44 @@ fragment_code = """
         
         
         void main(){
-        
-            // calculando reflexao ambiente
-            vec3 ambient = ka * lightColor;             
-        
             ////////////////////////
             // Luz #1
             ////////////////////////
+            
+            // calculando reflexao ambiente interior
+            vec3 ambient_i = ka_i * lightColor; 
             
             // calculando reflexao difusa
             vec3 norm1 = normalize(out_normal); // normaliza vetores perpendiculares
             vec3 lightDir1 = normalize(lightPos1 - out_fragPos); // direcao da luz
             float diff1 = max(dot(norm1, lightDir1), 0.0); // verifica limite angular (entre 0 e 90)
-            vec3 diffuse1 = kd * diff1 * lightColor; // iluminacao difusa
+            vec3 diffuse1 = kd_i * diff1 * lightColor; // iluminacao difusa
             
             // calculando reflexao especular
             vec3 viewDir1 = normalize(viewPos - out_fragPos); // direcao do observador/camera
             vec3 reflectDir1 = reflect(-lightDir1, norm1); // direcao da reflexao
-            float spec1 = pow(max(dot(viewDir1, reflectDir1), 0.0), ns);
-            vec3 specular1 = ks * spec1 * lightColor;    
+            float spec1 = pow(max(dot(viewDir1, reflectDir1), 0.0), ns_i);
+            vec3 specular1 = ks_i * spec1 * lightColor;    
             
             
             ////////////////////////
             // Luz #2
             ////////////////////////
+
+            // calculando reflexao ambiente interior
+            vec3 ambient_e = ka_e * lightColor; 
             
             // calculando reflexao difusa
             vec3 norm2 = normalize(out_normal); // normaliza vetores perpendiculares
             vec3 lightDir2 = normalize(lightPos2 - out_fragPos); // direcao da luz
             float diff2 = max(dot(norm2, lightDir2), 0.0); // verifica limite angular (entre 0 e 90)
-            vec3 diffuse2 = kd * diff2 * lightColor; // iluminacao difusa
+            vec3 diffuse2 = kd_e * diff2 * lightColor; // iluminacao difusa
             
             // calculando reflexao especular
             vec3 viewDir2 = normalize(viewPos - out_fragPos); // direcao do observador/camera
             vec3 reflectDir2 = reflect(-lightDir2, norm2); // direcao da reflexao
-            float spec2 = pow(max(dot(viewDir2, reflectDir2), 0.0), ns);
-            vec3 specular2 = ks * spec2 * lightColor;    
+            float spec2 = pow(max(dot(viewDir2, reflectDir2), 0.0), ns_e);
+            vec3 specular2 = ks_e * spec2 * lightColor;    
             
             ////////////////////////
             // Combinando as duas fontes
@@ -103,7 +121,7 @@ fragment_code = """
             
             // aplicando o modelo de iluminacao
             vec4 texture = texture2D(samplerTexture, out_texture);
-            vec4 result = vec4((ambient + diffuse1 + diffuse2 + specular1 + specular2),1.0) * texture; // aplica iluminacao
+            vec4 result = vec4((ambient_e + ambient_i + diffuse1 + diffuse2 + specular1 + specular2),1.0) * texture; // aplica iluminacao
             gl_FragColor = result;
 
         }
@@ -202,10 +220,8 @@ def load_model_from_file(filename):
     return model
 
 glEnable(GL_TEXTURE_2D)
-qtd_texturas = 90
+qtd_texturas = 70
 textures = glGenTextures(qtd_texturas)
-
-
 
 def load_texture_from_file(texture_id, img_textura):
     glBindTexture(GL_TEXTURE_2D, texture_id)
@@ -313,22 +329,51 @@ def processObjects2Textures(dir, objFile, imageFile1, imageFile2):
 
 
 
+# interior da casa
+################################################################
+
+
+processObjects("aya", "aya.obj", "aya.jpg")
+processObjects("beagle", "beagle.obj", "beagle.jpg")
+processObjects2Textures("chair", "chair.obj", "chair1.jpg", "chair2.PNG")
+processObjects("cottage", "cottage.obj", "cottage2.png")
+processObjects("table1", "table1.obj", "table1.png")
+processObjects("floor1", "floor.obj", "floor.jpg")
+processObjects2Textures("sofa", "sofa.obj", "white.PNG", "wood.jpg")
+processObjects("stool", "stool.obj", "stool.png")
+processObjects("plant", "plant.obj", "plant.jpg")
+processObjects("tv", "tv.obj", "tv.png")
+processObjects("cabinet", "cabinet.obj", "cabinet.jpg")
+processObjects("bed", "bed1.obj", "Texture.png")
+processObjects("chair2", "chair2.obj", "chair2.jpg")
+processObjects("luz", "caixa2.obj", "luz.png")
+processObjects("caixa", "caixa2.obj", "wood.jpg")
+processObjects("floor", "floor2.obj", "floor.jpg")
+
+
+
+
+
+
+
+
+################################################################
 
 # exterior da casa
 ################################################################
 
-processObjects("grass", "terreno.obj", "grass.jpeg")
-# processObjects_no_normal("street", "terreno2.obj", "street.jpg")
-# processObjects_no_normal("water", "water.obj", "water5.jpg")
+# processObjects("grass", "terreno2.obj", "grass.jpeg")
+# processObjects("street", "terreno2.obj", "street.jpg")
+# processObjects("water", "water.obj", "water5.jpg")
 # processObjects("car", "car.obj", "car.jpg")
 # processObjects("dogh", "doghouse.obj", "2_BaseColor.jpg")
 # processObjects("ball", "ball.obj", "ball.jpg")
 # processObjects("doberman", "dog2.obj", "Doberman_Pinscher_dif.jpg")
 # processObjects("cat", "cat.obj", "Cat_bump.jpg")
 # processObjects("sky", "terreno.obj", "sky2.jpg")
-# processObjects_no_normal("cobleStone", "floor.obj", "cobleStone.jpg")
+# processObjects("cobleStone", "floor.obj", "cobleStone.jpg")
 # processObjects("dolphin", "dolphin1.obj", "dolphin.jpg")
-processObjects("whale", "whale2.obj", "10054_Whale_Diffuse_v2.jpg")
+# processObjects("whale", "whale2.obj", "10054_Whale_Diffuse_v2.jpg")
 # processObjects("plane1", "plane1.obj", "plane1.jpg")
 # processObjects("plane2", "plane2.obj", "plane2.jpg")
 # processObjects("container", "container.obj", "12281_Container_diffuse.jpg")
@@ -338,6 +383,9 @@ processObjects("sun", "sun2.obj", "sun.jpg")
 
 
 ################################################################
+
+
+
 
 # Request a buffer slot from GPU
 buffer = glGenBuffers(3)
@@ -381,150 +429,7 @@ loc_normals_coord = glGetAttribLocation(program, "normals")
 glEnableVertexAttribArray(loc_normals_coord)
 glVertexAttribPointer(loc_normals_coord, 3, GL_FLOAT, False, stride, offset)
 
-def desenha_caixa():
-    
 
-    # aplica a matriz model
-    angle = 0.0
-    
-    r_x = 0.0; r_y = 1.0; r_z = 0.0;
-    
-    # translacao
-    t_x = 0.0; t_y = 0.0; t_z = 0.0;
-    
-    # escala
-    s_x = 1.0; s_y = 1.0; s_z = 1.0;
-    
-    mat_model = model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
-    loc_model = glGetUniformLocation(program, "model")
-    glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
-       
-    
-    #### define parametros de ilumincao do modelo
-    ka = 0.3 # coeficiente de reflexao ambiente do modelo
-    kd = 0.3 # coeficiente de reflexao difusa do modelo
-    ks = 0.9 # coeficiente de reflexao especular do modelo
-    ns = 64.0 # expoente de reflexao especular
-    
-    loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
-    glUniform1f(loc_ka, ka) ### envia ka pra gpu
-    
-    loc_kd = glGetUniformLocation(program, "kd") # recuperando localizacao da variavel kd na GPU
-    glUniform1f(loc_kd, kd) ### envia kd pra gpu    
-    
-    loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
-    glUniform1f(loc_ks, ks) ### envia ks pra gpu        
-    
-    loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
-    glUniform1f(loc_ns, ns) ### envia ns pra gpu        
-
-    
-    #define id da textura do modelo
-    glBindTexture(GL_TEXTURE_2D, 0)
-    
-    
-    # desenha o modelo
-    glDrawArrays(GL_TRIANGLES, 0, 36) ## renderizando
-def desenha_luz1(t_x, t_y, t_z):
-    
-
-    # aplica a matriz model
-    angle = 0.0
-    
-    r_x = 0.0; r_y = 0.0; r_z = 1.0;
-    
-    # translacao
-    #t_x = 0.0; t_y = 0.0; t_z = 0.0;
-    
-    # escala
-    s_x = 0.1; s_y = 0.1; s_z = 0.1;
-    
-    mat_model = model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
-    loc_model = glGetUniformLocation(program, "model")
-    glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
-       
-    
-    #### define parametros de ilumincao do modelo
-    ka = 1 # coeficiente de reflexao ambiente do modelo
-    kd = 1 # coeficiente de reflexao difusa do modelo
-    ks = 1 # coeficiente de reflexao especular do modelo
-    ns = 1000.0 # expoente de reflexao especular
-    
-    loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
-    glUniform1f(loc_ka, ka) ### envia ka pra gpu
-    
-    loc_kd = glGetUniformLocation(program, "kd") # recuperando localizacao da variavel kd na GPU
-    glUniform1f(loc_kd, kd) ### envia kd pra gpu    
-    
-    loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
-    glUniform1f(loc_ks, ks) ### envia ns pra gpu        
-    
-    loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
-    glUniform1f(loc_ns, ns) ### envia ns pra gpu            
-    
-    loc_light_pos = glGetUniformLocation(program, "lightPos1") # recuperando localizacao da variavel lightPos na GPU
-    glUniform3f(loc_light_pos, t_x, t_y, t_z) ### posicao da fonte de luz
-        
-    
-    #define id da textura do modelo
-    glBindTexture(GL_TEXTURE_2D, 1)
-    
-    
-    # desenha o modelo
-    glDrawArrays(GL_TRIANGLES, 36, 36) ## renderizando
-    
-
-def desenha_luz2(t_x, t_y, t_z):
-    
-
-    # aplica a matriz model
-    angle = 0.0
-    
-    r_x = 0.0; r_y = 0.0; r_z = 1.0;
-    
-    # translacao
-    #t_x = 0.0; t_y = 0.0; t_z = 0.0;
-    
-    # escala
-    s_x = 0.1; s_y = 0.1; s_z = 0.1;
-    
-    mat_model = model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
-    loc_model = glGetUniformLocation(program, "model")
-    glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
-       
-    
-    #### define parametros de ilumincao do modelo
-    ka = 1 # coeficiente de reflexao ambiente do modelo
-    kd = 1 # coeficiente de reflexao difusa do modelo
-    ks = 1 # coeficiente de reflexao especular do modelo
-    ns = 1000.0 # expoente de reflexao especular
-    
-    loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
-    glUniform1f(loc_ka, ka) ### envia ka pra gpu
-    
-    loc_kd = glGetUniformLocation(program, "kd") # recuperando localizacao da variavel kd na GPU
-    glUniform1f(loc_kd, kd) ### envia kd pra gpu    
-    
-    loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
-    glUniform1f(loc_ks, ks) ### envia ns pra gpu        
-    
-    loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
-    glUniform1f(loc_ns, ns) ### envia ns pra gpu            
-    
-    loc_light_pos = glGetUniformLocation(program, "lightPos2") # recuperando localizacao da variavel lightPos na GPU
-    glUniform3f(loc_light_pos, t_x, t_y, t_z) ### posicao da fonte de luz
-        
-    
-    #define id da textura do modelo
-    glBindTexture(GL_TEXTURE_2D, 2)
-    
-    
-    # desenha o modelo
-    glDrawArrays(GL_TRIANGLES, 72, 36) ## renderizando
-
-ka_chaleira = 0.8
-kd_chaleira = 0.25
-ks_chaleira = 0.4
 def desenha_lamp(angle=0.0, 
             r_x=0.0, r_y=0.0, r_z=1.0,
             t_x=0.0, t_y=0.0, t_z=0.0,
@@ -540,16 +445,16 @@ def desenha_lamp(angle=0.0,
     ks = 1 # coeficiente de reflexao especular do modelo
     ns = 1000.0 # expoente de reflexao especular
     
-    loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
+    loc_ka = glGetUniformLocation(program, "ka_i") # recuperando localizacao da variavel ka na GPU
     glUniform1f(loc_ka, ka) ### envia ka pra gpu
     
-    loc_kd = glGetUniformLocation(program, "kd") # recuperando localizacao da variavel kd na GPU
+    loc_kd = glGetUniformLocation(program, "kd_i") # recuperando localizacao da variavel kd na GPU
     glUniform1f(loc_kd, kd) ### envia kd pra gpu    
     
-    loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
+    loc_ks = glGetUniformLocation(program, "ks_i") # recuperando localizacao da variavel ks na GPU
     glUniform1f(loc_ks, ks) ### envia ns pra gpu        
     
-    loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
+    loc_ns = glGetUniformLocation(program, "ns_i") # recuperando localizacao da variavel ns na GPU
     glUniform1f(loc_ns, ns) ### envia ns pra gpu            
     
     loc_light_pos = glGetUniformLocation(program, "lightPos1") # recuperando localizacao da variavel lightPos na GPU
@@ -578,19 +483,19 @@ def desenha_sun(angle=0.0,
     ks = 1 # coeficiente de reflexao especular do modelo
     ns = 1000.0 # expoente de reflexao especular
     
-    loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
+    loc_ka = glGetUniformLocation(program, "ka_e") # recuperando localizacao da variavel ka na GPU
     glUniform1f(loc_ka, ka) ### envia ka pra gpu
     
-    loc_kd = glGetUniformLocation(program, "kd") # recuperando localizacao da variavel kd na GPU
+    loc_kd = glGetUniformLocation(program, "kd_e") # recuperando localizacao da variavel kd na GPU
     glUniform1f(loc_kd, kd) ### envia kd pra gpu    
     
-    loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
+    loc_ks = glGetUniformLocation(program, "ks_e") # recuperando localizacao da variavel ks na GPU
     glUniform1f(loc_ks, ks) ### envia ns pra gpu        
     
-    loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
+    loc_ns = glGetUniformLocation(program, "ns_e") # recuperando localizacao da variavel ns na GPU
     glUniform1f(loc_ns, ns) ### envia ns pra gpu            
     
-    loc_light_pos = glGetUniformLocation(program, "lightPos1") # recuperando localizacao da variavel lightPos na GPU
+    loc_light_pos = glGetUniformLocation(program, "lightPos2") # recuperando localizacao da variavel lightPos na GPU
     glUniform3f(loc_light_pos, t_x, t_y, t_z) ### posicao da fonte de luz
         
     
@@ -630,8 +535,34 @@ def sum_k(ka ,kd ,ks):
         ks_aux = 0
     return (ka_aux, kd_aux, ks_aux)
 
+def set_zero_e():
+    loc_ka = glGetUniformLocation(program, "ka_e") # recuperando localizacao da variavel ka na GPU
+    glUniform1f(loc_ka, 0.01) ### envia ka pra gpu
+    
+    loc_kd = glGetUniformLocation(program, "kd_e") # recuperando localizacao da variavel kd na GPU
+    glUniform1f(loc_kd, 0.0) ### envia kd pra gpu    
 
-def desenha(angle=0.0, 
+    loc_ks = glGetUniformLocation(program, "ks_e") # recuperando localizacao da variavel ks na GPU
+    glUniform1f(loc_ks, 0.0) ### envia ks pra gpu        
+    
+    loc_ns = glGetUniformLocation(program, "ns_e") # recuperando localizacao da variavel ns na GPU
+    glUniform1f(loc_ns, 1.0) ### envia ns pra gpu        
+
+def set_zero_i():
+    loc_ka = glGetUniformLocation(program, "ka_i") # recuperando localizacao da variavel ka na GPU
+    glUniform1f(loc_ka, 0.01) ### envia ka pra gpu
+    
+    loc_kd = glGetUniformLocation(program, "kd_i") # recuperando localizacao da variavel kd na GPU
+    glUniform1f(loc_kd, 0.0) ### envia kd pra gpu    
+
+    loc_ks = glGetUniformLocation(program, "ks_i") # recuperando localizacao da variavel ks na GPU
+    glUniform1f(loc_ks, 0.0) ### envia ks pra gpu        
+    
+    loc_ns = glGetUniformLocation(program, "ns_i") # recuperando localizacao da variavel ns na GPU
+    glUniform1f(loc_ns, 1.0) ### envia ns pra gpu  
+
+
+def desenhaI(angle=0.0, 
             r_x=0.0, r_y=0.0, r_z=1.0,
             t_x=0.0, t_y=0.0, t_z=0.0,
             s_x=1.0, s_y=1.0, s_z=1.0,
@@ -643,17 +574,18 @@ def desenha(angle=0.0,
 
     #### define parametros de ilumincao do modelo
     (ka, kd, ks) = sum_k(ka, kd, ks)
+    set_zero_e()
     
-    loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
+    loc_ka = glGetUniformLocation(program, "ka_i") # recuperando localizacao da variavel ka na GPU
     glUniform1f(loc_ka, ka) ### envia ka pra gpu
     
-    loc_kd = glGetUniformLocation(program, "kd") # recuperando localizacao da variavel kd na GPU
+    loc_kd = glGetUniformLocation(program, "kd_i") # recuperando localizacao da variavel kd na GPU
     glUniform1f(loc_kd, kd) ### envia kd pra gpu    
 
-    loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
+    loc_ks = glGetUniformLocation(program, "ks_i") # recuperando localizacao da variavel ks na GPU
     glUniform1f(loc_ks, ks) ### envia ks pra gpu        
     
-    loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
+    loc_ns = glGetUniformLocation(program, "ns_i") # recuperando localizacao da variavel ns na GPU
     glUniform1f(loc_ns, ns) ### envia ns pra gpu        
 
 
@@ -664,38 +596,40 @@ def desenha(angle=0.0,
     # desenha o modelo
     glDrawArrays(GL_TRIANGLES, vertices_dict[modelDir][0], vertices_dict[modelDir][1] - vertices_dict[modelDir][0]) ## renderizando
 
-def desenha_no_light(angle=0.0, 
+def desenhaE(angle=0.0, 
             r_x=0.0, r_y=0.0, r_z=1.0,
             t_x=0.0, t_y=0.0, t_z=0.0,
             s_x=1.0, s_y=1.0, s_z=1.0,
-            ka=0.8, kd=0.25, ks=0.2, ns= 36.0,
+            ka=0.8, kd=0.25, ks=0.2, ns= 32.0,
             modelDir=""):
     mat_model = model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
     loc_model = glGetUniformLocation(program, "model")
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
-    #define id da textura do modelo
-    (ka, kd, ks) = sum_k(ka, kd, ks)
 
-    loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
+    #### define parametros de ilumincao do modelo
+    (ka, kd, ks) = sum_k(ka, kd, ks)
+    set_zero_i()
+    loc_ka = glGetUniformLocation(program, "ka_e") # recuperando localizacao da variavel ka na GPU
     glUniform1f(loc_ka, ka) ### envia ka pra gpu
     
-    loc_kd = glGetUniformLocation(program, "kd") # recuperando localizacao da variavel kd na GPU
+    loc_kd = glGetUniformLocation(program, "kd_e") # recuperando localizacao da variavel kd na GPU
     glUniform1f(loc_kd, kd) ### envia kd pra gpu    
 
-    loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
+    loc_ks = glGetUniformLocation(program, "ks_e") # recuperando localizacao da variavel ks na GPU
     glUniform1f(loc_ks, ks) ### envia ks pra gpu        
     
-    loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
+    loc_ns = glGetUniformLocation(program, "ns_e") # recuperando localizacao da variavel ns na GPU
     glUniform1f(loc_ns, ns) ### envia ns pra gpu        
 
 
+
+    
+    #define id da textura do modelo
     glBindTexture(GL_TEXTURE_2D, vertices_dict[modelDir][2])
     # desenha o modelo
     glDrawArrays(GL_TRIANGLES, vertices_dict[modelDir][0], vertices_dict[modelDir][1] - vertices_dict[modelDir][0]) ## renderizando
 
-
-
-def desenhaM2(angle=0.0, 
+def desenhaM2I(angle=0.0, 
             r_x=0.0, r_y=0.0, r_z=1.0,
             t_x=0.0, t_y=0.0, t_z=0.0,
             s_x=1.0, s_y=1.0, s_z=1.0,
@@ -705,18 +639,18 @@ def desenhaM2(angle=0.0,
     loc_model = glGetUniformLocation(program, "model")
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
     #define id da textura do modelo
-    (ka_aux, kd_aux, ks_aux) = sum_k(ka, kd, ks)
-
-    loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
-    glUniform1f(loc_ka, ka_aux) ### envia ka pra gpu
+    (ka, kd, ks) = sum_k(ka, kd, ks)
+    set_zero_e()
+    loc_ka = glGetUniformLocation(program, "ka_i") # recuperando localizacao da variavel ka na GPU
+    glUniform1f(loc_ka, ka) ### envia ka pra gpu
     
-    loc_kd = glGetUniformLocation(program, "kd") # recuperando localizacao da variavel kd na GPU
-    glUniform1f(loc_kd, kd_aux) ### envia kd pra gpu    
+    loc_kd = glGetUniformLocation(program, "kd_i") # recuperando localizacao da variavel kd na GPU
+    glUniform1f(loc_kd, kd) ### envia kd pra gpu    
 
-    loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
-    glUniform1f(loc_ks, ks_aux) ### envia ks pra gpu        
+    loc_ks = glGetUniformLocation(program, "ks_i") # recuperando localizacao da variavel ks na GPU
+    glUniform1f(loc_ks, ks) ### envia ks pra gpu        
     
-    loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
+    loc_ns = glGetUniformLocation(program, "ns_i") # recuperando localizacao da variavel ns na GPU
     glUniform1f(loc_ns, ns) ### envia ns pra gpu        
     
         
@@ -726,7 +660,37 @@ def desenhaM2(angle=0.0,
     # desenha o modelo
     glDrawArrays(GL_TRIANGLES, vertices_dict[modelDir][0], vertices_dict[modelDir][1] - vertices_dict[modelDir][0]) ## renderizando
 
+def desenhaM2E(angle=0.0, 
+            r_x=0.0, r_y=0.0, r_z=1.0,
+            t_x=0.0, t_y=0.0, t_z=0.0,
+            s_x=1.0, s_y=1.0, s_z=1.0,
+            ka=0.8, kd=0.25, ks=0.7, ns= 36.0,
+            modelDir=""):
+    mat_model = model2(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
+    loc_model = glGetUniformLocation(program, "model")
+    glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
+    #define id da textura do modelo
+    (ka, kd, ks) = sum_k(ka, kd, ks)
+    set_zero_i()
 
+    loc_ka = glGetUniformLocation(program, "ka_e") # recuperando localizacao da variavel ka na GPU
+    glUniform1f(loc_ka, ka) ### envia ka pra gpu
+    
+    loc_kd = glGetUniformLocation(program, "kd_e") # recuperando localizacao da variavel kd na GPU
+    glUniform1f(loc_kd, kd) ### envia kd pra gpu    
+
+    loc_ks = glGetUniformLocation(program, "ks_e") # recuperando localizacao da variavel ks na GPU
+    glUniform1f(loc_ks, ks) ### envia ks pra gpu        
+    
+    loc_ns = glGetUniformLocation(program, "ns_e") # recuperando localizacao da variavel ns na GPU
+    glUniform1f(loc_ns, ns) ### envia ns pra gpu        
+    
+        
+    
+
+    glBindTexture(GL_TEXTURE_2D, vertices_dict[modelDir][2])
+    # desenha o modelo
+    glDrawArrays(GL_TRIANGLES, vertices_dict[modelDir][0], vertices_dict[modelDir][1] - vertices_dict[modelDir][0]) ## renderizando
 
 def desenha_chair(angle=0.0, 
             r_x=0.0, r_y=0.0, r_z=1.0,
@@ -734,22 +698,23 @@ def desenha_chair(angle=0.0,
             s_x=1.0, s_y=1.0, s_z=1.0,
             ka=0.8, kd=0.25, ks=0.2, ns= 36.0,
             modelDir=""):
-    mat_model = model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
+    mat_model = model2(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
     loc_model = glGetUniformLocation(program, "model")
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
     (ka, kd, ks) = sum_k(ka, kd, ks)
     
+    set_zero_e()
     
-    loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
+    loc_ka = glGetUniformLocation(program, "ka_i") # recuperando localizacao da variavel ka na GPU
     glUniform1f(loc_ka, ka) ### envia ka pra gpu
     
-    loc_kd = glGetUniformLocation(program, "kd") # recuperando localizacao da variavel kd na GPU
+    loc_kd = glGetUniformLocation(program, "kd_i") # recuperando localizacao da variavel kd na GPU
     glUniform1f(loc_kd, kd) ### envia kd pra gpu    
 
-    loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
+    loc_ks = glGetUniformLocation(program, "ks_i") # recuperando localizacao da variavel ks na GPU
     glUniform1f(loc_ks, ks) ### envia ks pra gpu        
     
-    loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
+    loc_ns = glGetUniformLocation(program, "ns_i") # recuperando localizacao da variavel ns na GPU
     glUniform1f(loc_ns, ns) ### envia ns pra gpu        
 
 
@@ -781,17 +746,18 @@ def desenha_sofa(angle=0.0,
 
     (ka, kd, ks) = sum_k(ka, kd, ks)
     
+    set_zero_e()
 
-    loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
+    loc_ka = glGetUniformLocation(program, "ka_i") # recuperando localizacao da variavel ka na GPU
     glUniform1f(loc_ka, ka) ### envia ka pra gpu
     
-    loc_kd = glGetUniformLocation(program, "kd") # recuperando localizacao da variavel kd na GPU
+    loc_kd = glGetUniformLocation(program, "kd_i") # recuperando localizacao da variavel kd na GPU
     glUniform1f(loc_kd, kd) ### envia kd pra gpu    
 
-    loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
+    loc_ks = glGetUniformLocation(program, "ks_i") # recuperando localizacao da variavel ks na GPU
     glUniform1f(loc_ks, ks) ### envia ks pra gpu        
     
-    loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
+    loc_ns = glGetUniformLocation(program, "ns_i") # recuperando localizacao da variavel ns na GPU
     glUniform1f(loc_ns, ns) ### envia ns pra gpu   
 
     
@@ -807,50 +773,10 @@ def desenha_sofa(angle=0.0,
 
 
 
-def desenha_chaleira():
-    
-
-    # aplica a matriz model
-    angle = 0.0
-    
-    r_x = 0.0; r_y = 1.0; r_z = 0.0;
-    
-    # translacao
-    t_x = 0.0; t_y = 0.0; t_z = 0.0;
-    
-    # escala
-    s_x = 0.1; s_y = 0.1; s_z = 0.1;
-    
-    mat_model = model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
-    loc_model = glGetUniformLocation(program, "model")
-    glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
-       
-    
-    #### define parametros de ilumincao do modelo
-    ns = 32.0 # expoente de reflexao especular
-    
-    loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
-    glUniform1f(loc_ka, ka_chaleira) ### envia ka pra gpu
-    
-    loc_kd = glGetUniformLocation(program, "kd") # recuperando localizacao da variavel kd na GPU
-    glUniform1f(loc_kd, kd_chaleira) ### envia kd pra gpu    
-    
-    loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
-    glUniform1f(loc_ks, ks_chaleira) ### envia ks pra gpu        
-    
-    loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
-    glUniform1f(loc_ns, ns) ### envia ns pra gpu        
-
-    
-    #define id da textura do modelo
-    glBindTexture(GL_TEXTURE_2D, 4)
-    
-    
-    # desenha o modelo
-    glDrawArrays(GL_TRIANGLES, 831228, 875244-831228) ## renderizando
 
 
-cameraPos   = glm.vec3( 0.0,      0.0,   0.0);
+
+cameraPos   = glm.vec3( 0.0,      8.0,   0.0);
 cameraFront = glm.vec3( 0.0,    0.0,     0.0);
 cameraUp    = glm.vec3(0.0,  1.0,  0.0);
 
@@ -860,6 +786,7 @@ polygonal_mode = False
 ka_add = 0.0
 kd_add = 0.0
 ks_add = 0.0
+
 def key_event(window,key,scancode,action,mods):
     global cameraPos, cameraFront, cameraUp, polygonal_mode
     global ka_add, kd_add, ks_add
@@ -896,6 +823,11 @@ def key_event(window,key,scancode,action,mods):
     
     if key == 83 and (action==1 or action==2): # tecla S
         cameraPos -= cameraSpeed * cameraFront
+
+    if cameraPos[1] > 89.8:
+        cameraPos = glm.vec3((cameraPos[0], 89.8, cameraPos[2]))
+    elif cameraPos[1] < -1.8:
+        cameraPos = glm.vec3((cameraPos[0], -1.8, cameraPos[2]))
     
     if key == 65 and (action==1 or action==2): # tecla A
         cameraPos -= glm.normalize(glm.cross(cameraFront, cameraUp)) * cameraSpeed
@@ -908,7 +840,6 @@ def key_event(window,key,scancode,action,mods):
     else:
         if key == 80 and action==1 and polygonal_mode==False:
             polygonal_mode=True
-        
         
         
         
@@ -951,6 +882,8 @@ def mouse_event(window, xpos, ypos):
     
 glfw.set_key_callback(window,key_event)
 glfw.set_cursor_pos_callback(window, mouse_event)
+
+
 def model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z):
     
     angle = math.radians(angle)
@@ -990,7 +923,6 @@ def model2(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z):
     
     return matrix_transform
 
-
 def view():
     global cameraPos, cameraFront, cameraUp
     mat_view = glm.lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
@@ -1003,7 +935,6 @@ def projection():
     mat_projection = glm.perspective(glm.radians(45.0), largura/altura, 0.1, 1000.0)
     mat_projection = np.array(mat_projection)    
     return mat_projection
-
 
 def circle(angle, raio):
     return (raio * math.sin(math.radians(angle)), raio * math.cos(math.radians(angle)) )
@@ -1046,11 +977,14 @@ whale_position = 40
 anglePlane = 0.0
 sun_angle = 0.0
 
+
+
+
 glfw.show_window(window)
 glfw.set_cursor_pos(window, lastX, lastY)
 glEnable(GL_DEPTH_TEST) ### importante para 3D
    
-ang = 0.1
+
     
 while not glfw.window_should_close(window):
 
@@ -1066,22 +1000,122 @@ while not glfw.window_should_close(window):
     if polygonal_mode==False:
         glPolygonMode(GL_FRONT_AND_BACK,GL_FILL)
     
-    #desenha_caixa()
-    desenha(s_x=140, s_y=0.001, s_z=140, t_z=-40 , t_y = -2,modelDir="grass")
-
-
+     # interior da casa
     
-    # desenha baleia
-    sun_angle+=1;
+#####################################################################################################
+
+
+    # ka=0.8, kd=0.25, ks=0.2, ns= 36.0,
+
+    # interior da casa
+
+
+    desenhaI(s_x=0.005, s_y=0.005, s_z=0.005,t_x =-4, t_z=-19.8,ka=1.0,  kd=0.1,ks=0.0, modelDir="aya");
+    desenhaI(s_x=20, s_y=20, s_z=20, t_z = -10,t_y= 0.0001, ka= 1.0,kd=0.2, ks=0.6 ,modelDir="floor")
+    desenhaI(s_x=6, s_y=6, s_z=6, t_x = -14,t_z= 13, ka= 1.0,kd=0.0, ks=0.0,modelDir="floor")    
+    desenha_chair(s_x=0.04, s_y=0.04, s_z=0.04,t_x =-4 ,t_z=-20, kd=0.5, ks=0.0 ,modelDir="chair");
+    desenhaM2I(angle=-90,r_x=1.0 ,r_z=0.0,s_x=0.05, s_y=0.05, s_z=0.05,t_x=0.0,kd=0.7,modelDir="beagle")
+    desenhaI(s_x=3.58, s_y=5, s_z=4,t_x= -0.7, t_y = -2,t_z= -8, ks=0.0, modelDir="cottage")
+    desenhaM2I(angle=-90, r_y=1.0 ,r_z=0.0, s_x=0.013, s_y=0.013, s_z=0.013, t_y= 3, t_x=18, t_z=-18,ka=1.0,kd=0.5, ks=0.3 ,modelDir="table1")
+    desenha_sofa(s_x=0.05, s_y=0.05, s_z=0.05, t_x=-17, t_y = 4,t_z=-22, ka=0.8, kd=0.3, ks=0.0 ,modelDir="sofa")
+    desenhaI(s_x=2, s_y=0.5, s_z=2, t_x=-13.5, t_z = -14, ka=0.95 ,kd=0.0, ks=1.0 , ns=36.0, modelDir="stool")
+    desenhaI(s_x=0.32, s_y=0.3, s_z=0.32,t_x=-13.5, t_y= 2.2, t_z= -14,modelDir="caixa")
+    desenha_lamp(angle=180, r_x=1.0,r_z=0.0, s_x=0.3, s_y=0.3, s_z=0.3,t_x=-13.5, t_y= 2.7, t_z= -14,modelDir="luz")
+    desenhaI(s_x=0.8, s_y=0.8, s_z=0.8,t_y= 0, t_x=18, t_z=-13,  ka=1.0,kd=0.1,ks=0.0,modelDir="plant")
+    desenha_chair(angle=90, r_y=1.0 ,r_z=0.0,s_x=0.04, s_y=0.04, s_z=0.04,  t_x=16, t_z=-16, kd=0.5,ks=0.0,modelDir="chair");
+    desenhaM2I(angle=180, r_y=1.0,r_z=0.0,s_x=0.08, s_y=0.03, s_z=0.05,t_x=-13.5,t_y=1.0 ,t_z = -2.3, kd=0.4,ks=0.5, ns=30,  modelDir="cabinet")
+    desenhaM2I(angle=-90 ,r_y=1.0,r_z=0.0,s_x=2.5,s_y=2.5,s_z=2.5,t_x= 15, t_z=5, t_y= 2, ka=1.0, kd=0.1,ks=0.0,modelDir="bed")
+    desenhaM2I(angle=90,r_y=0.1,r_z=0.0,  s_x=0.04, s_y=0.06, s_z=0.08,t_y=2.0,t_x=-20.0, t_z = 12.5,modelDir="cabinet")
+    desenhaI(s_x=0.4, s_y=0.4, s_z=0.4, t_y=4.3,t_x=-18, t_z= 7,  ka=0.8,kd=0.6, ks=0.0, modelDir="plant")
+    desenhaI(s_x=0.4, s_y=0.4, s_z=0.4, t_y=4.3,t_x=-18, t_z= 16, ka=0.8,kd=0.6, ks=0.0, modelDir="plant")
+    desenhaM2I(angle=-90,r_y=0.1,r_z=0.0,  s_x=1.1, s_y=1.1, s_z=1.1,t_x=-16,  t_z = 12.5,ka=1.0, kd=0.4,modelDir="chair2")
+    desenhaM2I(angle=-90,r_y=0.1,r_z=0.0,  s_x=1.1, s_y=1.1, s_z=1.1,t_x=-16,  t_z = 10,ka=1.0, kd=0.4 ,modelDir="chair2")
+    desenhaM2I(angle=180, r_y=1.0,r_z=0.0, t_x=-13.5, t_y= 2.1,t_z=-4, ka=0.5, kd=0.8,ks=1.0,ns=56.0, modelDir="tv")
+
+#####################################################################################################
+
+
+    #exterior da casa
+
+
+    # desenha(s_x=140, s_y=140, s_z=140, t_z=-40 , t_y = -2,ka=1.0, kd=0.0,modelDir="grass")
+    # desenha(s_x=10, s_z= 20, t_z= -50, t_y= -1.8,modelDir= "cobleStone")
+    # desenha(s_x=140, s_y=140, s_z=140, t_z=-40 , t_y = 90, ka=0.1, kd=0.5, ks=1.0, ns=20.0 , modelDir="sky")  
+
+    if  sun_angle > 360:
+        sun_angle = 0.0
+    sun_angle += 0.3;
+
     desenha_sun(angle =sun_angle * 3, r_y=1.0, r_z=0.0, s_x= 3.0 ,s_y=3.0 ,s_z=3.0, t_z = -70 + 100 * math.sin(math.radians(sun_angle)) + 50, t_x = 100 * math.cos(math.radians(sun_angle)) ,t_y = 80, modelDir="sun")
-    
-    ydw = fish_move(whale_position, 1, 40, False)
-    desenhaM2(angle=90,r_y = 1.0, r_z = 0 ,s_x=0.2, s_y=0.2, s_z=0.2,t_z = -5  , t_x = 0,t_y = 0.0, ka=0.0, kd=1.0, ks=1.0,ns=50.0 , modelDir="whale")
+
+    # desenha(angle = 90 , r_z= 0 ,r_y = 1,s_x=140.0, s_z=14.0, t_z = -40, t_x = 40 ,t_y = -1.8,ka=0.5, ks=1.0, ns=60, modelDir="street")
+    # desenha(angle = 90 , r_z= 0 ,r_y = 1,s_x=140.0, s_z=20.0, t_z = 50, t_x = 40 ,t_y = -1.8, ka=1.0, kd=0.0,ks=0.0, modelDir="water")
+  
+    # # desenhando golfinhos
+
+    # if  dolphin_position < -150:
+    #     dolphin_position = 40
+    # dolphin_position -= 0.19
+    # ydp = fish_move(dolphin_position, 5, 40, True)
+    # desenhaM2(angle= angle_dolphin,r_x=1.0,r_z = 0.0 ,s_x=1.1, s_y=1.1, s_z=1.1,t_z = dolphin_position , t_x = 45 ,t_y = -2.0 + ydp , ka=0.8, kd=0.2,  ks=1.0, ns=70.0, modelDir="dolphin")
+    # desenhaM2(angle= angle_dolphin,r_x=1.0,r_z = 0.0 ,s_x=1.1, s_y=1.1, s_z=1.1,t_z = dolphin_position + 10, t_x = 40 ,t_y = -2.0 + ydp , ka=0.8, kd=0.2,  ks=1.0, ns=70.0, modelDir="dolphin")
+
+    # # desenha baleia
+
+    # if  whale_position < -150:
+    #     whale_position = 40
+    # whale_position -= 0.1
+    # ydw = fish_move(whale_position, 1, 40, False)
+    # desenhaM2(angle=90,r_x=0.0,r_y = 1, r_z = 0 ,s_x=0.2, s_y=0.2, s_z=0.2,t_z = whale_position , t_x = 55 ,t_y = -2.5 + ydw , ka=0.5, kd=0.4, ks=1.0, ns=70.0 , modelDir="whale")
 
 
+    # # desenhando os aviões
+    # anglePlane += 1
+    # if anglePlane > 360:
+    #     anglePlane = 0.0
+
+    # anglePlane2 = anglePlane + 90
+    # (planex1, planey2) = elipse( 50 , 40, anglePlane)
+    # desenhaM2(angle=anglePlane,r_y=1.0,r_z=0,t_y= 40 + 10 * math.sin(math.radians(1.5 * anglePlane)), t_x = 5  + planex1, t_z=-70 + planey2,ka=0.7, kd=0.5, ks=0.0 ,  modelDir="plane1")
+    
+    # (planex1, planey2) = elipse( 50 , 40, anglePlane2)
+    # desenhaM2(angle=anglePlane2, s_z=0.7, s_y=0.7, s_x=0.7 ,r_y=1.0,r_z=0,t_y= 40 + 8 * math.sin(math.radians(1.5 * anglePlane)), t_x = 5  + planex1, t_z=-70 + planey2, ka=0.7, kd=0.5, ks=0.9, ns=60.0 ,modelDir="plane2")
     
 
     
+    # # desenha container
+    # desenhaM2( s_z=0.8,s_y=0.6,s_x=0.8, t_y=4.8,t_x=5 , t_z= -100 ,ka=0.7, kd=0.5, ks=1.0, ns=150.0, modelDir="container")
+    # desenhaM2( s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=-2 , t_z= -90 ,ka=1.0,kd=0.3, modelDir="librarian")
+    # desenhaM2(angle=180,r_y=1.0,r_z=0.0, s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=12, t_z= -90 , ka=1.0, kd=0.3, modelDir="librarian")
+
+
+    # # Faz a bola quicar
+    # if ball_position > 3:
+    #     x_ball_postion = -0.1;
+    # elif ball_position < -3:
+    #     x_ball_postion = 0.1;
+    # ball_position += x_ball_postion
+
+    # desenha(s_x=0.2, s_y=0.2, s_z=0.2,t_z= -55, t_x = 20 , t_y= ball_move(),  ka=1.0, kd=0.3, ks=0.9, ns=40.0, modelDir="ball")
+
+    
+    # # movendo o carro
+    # if car_position < -125:
+    #     car_position = 40
+    # car_position -= 1
+
+    # desenha(s_x=3.0, s_y=3.0 ,s_z=3.0, t_z = car_position, t_x = -33 ,t_y = -1.8,  ka=1.0, kd=0.3, ks=0.9, ns=40.0,  modelDir="car")    
+
+
+
+
+
+
+
+
+
+#####################################################################################################
+
     mat_view = view()
     loc_view = glGetUniformLocation(program, "view")
     glUniformMatrix4fv(loc_view, 1, GL_FALSE, mat_view)
