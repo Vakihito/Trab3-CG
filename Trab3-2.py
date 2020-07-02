@@ -576,6 +576,8 @@ def desenhaI(angle=0.0,
 
     #### define parametros de ilumincao do modelo
     (ka, kd, ks) = sum_k(ka, kd, ks)
+    if tecla_l_hit:
+        (ka, kd, ks) = (0.1, 0.0, 0.0)
     set_zero_e()
     
     loc_ka = glGetUniformLocation(program, "ka_i") # recuperando localizacao da variavel ka na GPU
@@ -642,6 +644,8 @@ def desenhaM2I(angle=0.0,
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
     #define id da textura do modelo
     (ka, kd, ks) = sum_k(ka, kd, ks)
+    if tecla_l_hit:
+        (ka, kd, ks) = (0.1, 0.0, 0.0)
     set_zero_e()
     loc_ka = glGetUniformLocation(program, "ka_i") # recuperando localizacao da variavel ka na GPU
     glUniform1f(loc_ka, ka) ### envia ka pra gpu
@@ -704,6 +708,8 @@ def desenha_chair(angle=0.0,
     loc_model = glGetUniformLocation(program, "model")
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
     (ka, kd, ks) = sum_k(ka, kd, ks)
+    if tecla_l_hit:
+        (ka, kd, ks) = (0.1, 0.0, 0.0)
     
     set_zero_e()
     
@@ -747,7 +753,8 @@ def desenha_sofa(angle=0.0,
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
 
     (ka, kd, ks) = sum_k(ka, kd, ks)
-    
+    if tecla_l_hit:
+        (ka, kd, ks) = (0.1, 0.0, 0.0)
     set_zero_e()
 
     loc_ka = glGetUniformLocation(program, "ka_i") # recuperando localizacao da variavel ka na GPU
@@ -789,18 +796,20 @@ ka_add = 0.0
 kd_add = 0.0
 ks_add = 0.0
 
+tecla_l_hit = False;
+
 def key_event(window,key,scancode,action,mods):
     global cameraPos, cameraFront, cameraUp, polygonal_mode
-    global ka_add, kd_add, ks_add
+    global ka_add, kd_add, ks_add, tecla_l_hit
 
     loc_light_pos = glGetUniformLocation(program, "lightPos1") # recuperando localizacao da variavel lightPos na GPU
-    print( "loc_light_pos : ", loc_light_pos);
-    
+    print(key)
+
     if key == 49 and (action==1 or action==2): # tecla 1
         ka_add  += 0.01
     if key == 50 and (action==1 or action==2): # tecla 2
         ka_add -= 0.01
-            
+    
     
     if key == 51 and (action==1 or action==2): # tecla 3
         kd_add += 0.01
@@ -817,6 +826,15 @@ def key_event(window,key,scancode,action,mods):
     print("kd : " , kd_add)
     print("ks : " , ks_add)
 
+    if key == 85 and (action==1 or action==2): # tecla u
+        ka_add  += 0.01
+    if key == 80 and (action==1 or action==2): # tecla p
+        ka_add -= 0.01
+    
+    if key == 76 and (action==1 or action==2) and not tecla_l_hit: # tecla l
+        tecla_l_hit = True;
+    elif key == 76 and (action==1 or action==2) and tecla_l_hit: # tecla l
+        tecla_l_hit = False;
 
 
     cameraSpeed = 1.0
@@ -837,10 +855,10 @@ def key_event(window,key,scancode,action,mods):
     if key == 68 and (action==1 or action==2): # tecla D
         cameraPos += glm.normalize(glm.cross(cameraFront, cameraUp)) * cameraSpeed
         
-    if key == 80 and action==1 and polygonal_mode==True:
+    if key == 73 and action==1 and polygonal_mode==True:
         polygonal_mode=False
     else:
-        if key == 80 and action==1 and polygonal_mode==False:
+        if key == 73 and action==1 and polygonal_mode==False:
             polygonal_mode=True
         
         
@@ -1037,7 +1055,7 @@ while not glfw.window_should_close(window):
 #####################################################################################################
 
 
-    #exterior da casa
+    # #exterior da casa
 
 
     desenhaE(s_x=140, s_y=140, s_z=140, t_z=-40 , t_y = -2,ka=0.6, kd=0.0,modelDir="grass")

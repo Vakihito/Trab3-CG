@@ -333,22 +333,22 @@ def processObjects2Textures(dir, objFile, imageFile1, imageFile2):
 ################################################################
 
 
-# processObjects("aya", "aya.obj", "aya.jpg")
-# processObjects("beagle", "beagle.obj", "beagle.jpg")
-# processObjects2Textures("chair", "chair.obj", "chair1.jpg", "chair2.PNG")
-# processObjects("cottage", "cottage.obj", "cottage2.png")
-# processObjects("table1", "table1.obj", "table1.png")
-# processObjects("floor1", "floor.obj", "floor.jpg")
-# processObjects2Textures("sofa", "sofa.obj", "white.PNG", "wood.jpg")
-# processObjects("stool", "stool.obj", "stool.png")
-# processObjects("plant", "plant.obj", "plant.jpg")
-# processObjects("tv", "tv.obj", "tv.png")
-# processObjects("cabinet", "cabinet.obj", "cabinet.jpg")
-# processObjects("bed1", "bed.obj", "bed.jpg")
-# processObjects("chair2", "chair2.obj", "chair2.jpg")
-# processObjects("luz", "caixa2.obj", "luz.png")
-# processObjects("caixa", "caixa2.obj", "wood.jpg")
-# processObjects("floor", "floor2.obj", "floor.jpg")
+processObjects("aya", "aya.obj", "aya.jpg")
+processObjects("beagle", "beagle.obj", "beagle.jpg")
+processObjects2Textures("chair", "chair.obj", "chair1.jpg", "chair2.PNG")
+processObjects("cottage", "cottage.obj", "cottage2.png")
+processObjects("table1", "table1.obj", "table1.png")
+processObjects("floor1", "floor.obj", "floor.jpg")
+processObjects2Textures("sofa", "sofa.obj", "white.PNG", "wood.jpg")
+processObjects("stool", "stool.obj", "stool.png")
+processObjects("plant", "plant.obj", "plant.jpg")
+processObjects("tv", "tv.obj", "tv.png")
+processObjects("cabinet", "cabinet.obj", "cabinet.jpg")
+processObjects("bed1", "bed.obj", "bed.jpg")
+processObjects("chair2", "chair2.obj", "chair2.jpg")
+processObjects("luz", "caixa2.obj", "luz.png")
+processObjects("caixa", "caixa2.obj", "wood.jpg")
+processObjects("floor", "floor2.obj", "floor.jpg")
 
 
 
@@ -362,21 +362,21 @@ def processObjects2Textures(dir, objFile, imageFile1, imageFile2):
 # exterior da casa
 ################################################################
 
-# processObjects("grass", "terreno2.obj", "grass.jpeg")
-# processObjects("street", "terreno2.obj", "street.jpg")
-# processObjects("water", "water.obj", "water5.jpg")
-# processObjects("car", "car.obj", "car.jpg")
-# processObjects("dogh", "doghouse.obj", "2_BaseColor.jpg")
-# processObjects("ball", "ball.obj", "ball.jpg")
-# processObjects("doberman", "dog2.obj", "Doberman_Pinscher_dif.jpg")
-# processObjects("cat", "cat.obj", "Cat_bump.jpg")
-# processObjects("sky", "terreno.obj", "sky2.jpg")
-# processObjects("cobleStone", "floor.obj", "cobleStone.jpg")
-# processObjects("dolphin", "dolphin1.obj", "dolphin.jpg")
-# processObjects("whale", "whale2.obj", "10054_Whale_Diffuse_v2.jpg")
-# processObjects("plane1", "plane1.obj", "plane1.jpg")
-# processObjects("plane2", "plane2.obj", "plane2.jpg")
-# processObjects("container", "container.obj", "12281_Container_diffuse.jpg")
+processObjects("grass", "terreno2.obj", "grass.jpeg")
+processObjects("street", "terreno2.obj", "street.jpg")
+processObjects("water", "water.obj", "water5.jpg")
+processObjects("car", "car.obj", "car.jpg")
+processObjects("dogh", "doghouse.obj", "2_BaseColor.jpg")
+processObjects("ball", "ball.obj", "ball.jpg")
+processObjects("doberman", "dog2.obj", "Doberman_Pinscher_dif.jpg")
+processObjects("cat", "cat.obj", "Cat_bump.jpg")
+processObjects("sky", "terreno.obj", "sky2.jpg")
+processObjects("cobleStone", "floor.obj", "cobleStone.jpg")
+processObjects("dolphin", "dolphin1.obj", "dolphin.jpg")
+processObjects("whale", "whale2.obj", "10054_Whale_Diffuse_v2.jpg")
+processObjects("plane1", "plane1.obj", "plane1.jpg")
+processObjects("plane2", "plane2.obj", "plane2.jpg")
+processObjects("container", "container.obj", "12281_Container_diffuse.jpg")
 processObjects("librarian", "librarian1.obj", "act_bibliotekar.jpg")
 processObjects("monstro", "monstro.obj", "monstro.jpg")
 processObjects("caixa2", "caixa.obj", "caixa.jpg")
@@ -576,6 +576,8 @@ def desenhaI(angle=0.0,
 
     #### define parametros de ilumincao do modelo
     (ka, kd, ks) = sum_k(ka, kd, ks)
+    if tecla_l_hit:
+        (ka, kd, ks) = (0.1, 0.0, 0.0)
     set_zero_e()
     
     loc_ka = glGetUniformLocation(program, "ka_i") # recuperando localizacao da variavel ka na GPU
@@ -642,6 +644,8 @@ def desenhaM2I(angle=0.0,
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
     #define id da textura do modelo
     (ka, kd, ks) = sum_k(ka, kd, ks)
+    if tecla_l_hit:
+        (ka, kd, ks) = (0.1, 0.0, 0.0)
     set_zero_e()
     loc_ka = glGetUniformLocation(program, "ka_i") # recuperando localizacao da variavel ka na GPU
     glUniform1f(loc_ka, ka) ### envia ka pra gpu
@@ -704,6 +708,8 @@ def desenha_chair(angle=0.0,
     loc_model = glGetUniformLocation(program, "model")
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
     (ka, kd, ks) = sum_k(ka, kd, ks)
+    if tecla_l_hit:
+        (ka, kd, ks) = (0.1, 0.0, 0.0)
     
     set_zero_e()
     
@@ -747,7 +753,8 @@ def desenha_sofa(angle=0.0,
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
 
     (ka, kd, ks) = sum_k(ka, kd, ks)
-    
+    if tecla_l_hit:
+        (ka, kd, ks) = (0.1, 0.0, 0.0)
     set_zero_e()
 
     loc_ka = glGetUniformLocation(program, "ka_i") # recuperando localizacao da variavel ka na GPU
@@ -789,18 +796,20 @@ ka_add = 0.0
 kd_add = 0.0
 ks_add = 0.0
 
+tecla_l_hit = False;
+
 def key_event(window,key,scancode,action,mods):
     global cameraPos, cameraFront, cameraUp, polygonal_mode
-    global ka_add, kd_add, ks_add
+    global ka_add, kd_add, ks_add, tecla_l_hit
 
     loc_light_pos = glGetUniformLocation(program, "lightPos1") # recuperando localizacao da variavel lightPos na GPU
-    print( "loc_light_pos : ", loc_light_pos);
-    
+    print(key)
+
     if key == 49 and (action==1 or action==2): # tecla 1
         ka_add  += 0.01
     if key == 50 and (action==1 or action==2): # tecla 2
         ka_add -= 0.01
-            
+    
     
     if key == 51 and (action==1 or action==2): # tecla 3
         kd_add += 0.01
@@ -817,6 +826,15 @@ def key_event(window,key,scancode,action,mods):
     print("kd : " , kd_add)
     print("ks : " , ks_add)
 
+    if key == 85 and (action==1 or action==2): # tecla u
+        ka_add  += 0.01
+    if key == 80 and (action==1 or action==2): # tecla p
+        ka_add -= 0.01
+    
+    if key == 76 and (action==1 or action==2) and not tecla_l_hit: # tecla l
+        tecla_l_hit = True;
+    elif key == 76 and (action==1 or action==2) and tecla_l_hit: # tecla l
+        tecla_l_hit = False;
 
 
     cameraSpeed = 1.0
@@ -837,10 +855,10 @@ def key_event(window,key,scancode,action,mods):
     if key == 68 and (action==1 or action==2): # tecla D
         cameraPos += glm.normalize(glm.cross(cameraFront, cameraUp)) * cameraSpeed
         
-    if key == 80 and action==1 and polygonal_mode==True:
+    if key == 73 and action==1 and polygonal_mode==True:
         polygonal_mode=False
     else:
-        if key == 80 and action==1 and polygonal_mode==False:
+        if key == 73 and action==1 and polygonal_mode==False:
             polygonal_mode=True
         
         
@@ -1012,108 +1030,108 @@ while not glfw.window_should_close(window):
     # interior da casa
 
 
-    # desenhaI(s_x=0.005, s_y=0.005, s_z=0.005,t_x =-4, t_z=-19.8,ka=1.0,  kd=0.1,ks=0.0, modelDir="aya");
-    # desenhaI(s_x=20, s_y=20, s_z=20, t_z = -10,t_y= 0.0001, ka= 1.0,kd=0.2, ks=0.6 ,modelDir="floor")
-    # desenhaI(s_x=6, s_y=6, s_z=6, t_x = -14,t_z= 13, ka= 1.0,kd=0.0, ks=0.0,modelDir="floor")    
-    # desenha_chair(s_x=0.04, s_y=0.04, s_z=0.04,t_x =-4 ,t_z=-20, kd=0.5, ks=0.0 ,modelDir="chair");
-    # desenhaM2I(angle=-90,r_x=1.0 ,r_z=0.0,s_x=0.05, s_y=0.05, s_z=0.05,t_x=0.0,kd=0.7,modelDir="beagle")
-    # desenhaI(s_x=3.58, s_y=5, s_z=4,t_x= -0.7, t_y = -2,t_z= -8, ks=0.0, modelDir="cottage")
-    # desenhaM2I(angle=-90, r_y=1.0 ,r_z=0.0, s_x=0.013, s_y=0.013, s_z=0.013, t_y= 3, t_x=18, t_z=-18,ka=1.0,kd=0.5, ks=0.3 ,modelDir="table1")
-    # desenha_sofa(s_x=0.05, s_y=0.05, s_z=0.05, t_x=-17, t_y = 4,t_z=-22, ka=0.8, kd=0.3, ks=0.0 ,modelDir="sofa")
-    # desenhaI(s_x=2, s_y=0.5, s_z=2, t_x=-13.5, t_z = -14, ka=0.95 ,kd=0.0, ks=1.0 , ns=36.0, modelDir="stool")
-    # desenhaI(s_x=0.32, s_y=0.3, s_z=0.32,t_x=-13.5, t_y= 2.2, t_z= -14,modelDir="caixa")
-    # desenha_lamp(angle=180, r_x=1.0,r_z=0.0, s_x=0.3, s_y=0.3, s_z=0.3,t_x=-13.5, t_y= 2.7, t_z= -14,modelDir="luz")
-    # desenhaI(s_x=0.8, s_y=0.8, s_z=0.8,t_y= 0, t_x=18, t_z=-13,  ka=1.0,kd=0.1,ks=0.0,modelDir="plant")
-    # desenha_chair(angle=90, r_y=1.0 ,r_z=0.0,s_x=0.04, s_y=0.04, s_z=0.04,  t_x=16, t_z=-16, kd=0.5,ks=0.0,modelDir="chair");
-    # desenhaM2I(angle=180, r_y=1.0,r_z=0.0,s_x=0.08, s_y=0.03, s_z=0.05,t_x=-13.5,t_y=1.0 ,t_z = -2.3, kd=0.4,ks=0.5, ns=30,  modelDir="cabinet")
-    # desenhaM2I(angle=180,r_y=1.0,r_z=0.0,s_x=0.5,s_y=0.5,s_z=0.5,t_x= 18, t_z=3, t_y= 0.0, ka=1.0, kd=0.2,ks=0.0,modelDir="bed1")
-    # desenhaM2I(angle=90,r_y=0.1,r_z=0.0,  s_x=0.04, s_y=0.06, s_z=0.08,t_y=2.0,t_x=-20.0, t_z = 12.5,modelDir="cabinet")
-    # desenhaI(s_x=0.4, s_y=0.4, s_z=0.4, t_y=4.3,t_x=-18, t_z= 7,  ka=0.8,kd=0.6, ks=0.0, modelDir="plant")
-    # desenhaI(s_x=0.4, s_y=0.4, s_z=0.4, t_y=4.3,t_x=-18, t_z= 16, ka=0.8,kd=0.6, ks=0.0, modelDir="plant")
-    # desenhaM2I(angle=-90,r_y=0.1,r_z=0.0,  s_x=1.1, s_y=1.1, s_z=1.1,t_x=-16,  t_z = 12.5,ka=1.0, kd=0.4,modelDir="chair2")
-    # desenhaM2I(angle=-90,r_y=0.1,r_z=0.0,  s_x=1.1, s_y=1.1, s_z=1.1,t_x=-16,  t_z = 10,ka=1.0, kd=0.4 ,modelDir="chair2")
-    # desenhaM2I(angle=180, r_y=1.0,r_z=0.0, t_x=-13.5, t_y= 2.1,t_z=-4, ka=0.5, kd=0.8,ks=1.0,ns=56.0, modelDir="tv")
+    desenhaI(s_x=0.005, s_y=0.005, s_z=0.005,t_x =-4, t_z=-19.8,ka=1.0,  kd=0.1,ks=0.0, modelDir="aya");
+    desenhaI(s_x=20, s_y=20, s_z=20, t_z = -10,t_y= 0.0001, ka= 1.0,kd=0.2, ks=0.6 ,modelDir="floor")
+    desenhaI(s_x=6, s_y=6, s_z=6, t_x = -14,t_z= 13, ka= 1.0,kd=0.0, ks=0.0,modelDir="floor")    
+    desenha_chair(s_x=0.04, s_y=0.04, s_z=0.04,t_x =-4 ,t_z=-20, kd=0.5, ks=0.0 ,modelDir="chair");
+    desenhaM2I(angle=-90,r_x=1.0 ,r_z=0.0,s_x=0.05, s_y=0.05, s_z=0.05,t_x=0.0,kd=0.7,modelDir="beagle")
+    desenhaI(s_x=3.58, s_y=5, s_z=4,t_x= -0.7, t_y = -2,t_z= -8, ks=0.0, modelDir="cottage")
+    desenhaM2I(angle=-90, r_y=1.0 ,r_z=0.0, s_x=0.013, s_y=0.013, s_z=0.013, t_y= 3, t_x=18, t_z=-18,ka=1.0,kd=0.5, ks=0.3 ,modelDir="table1")
+    desenha_sofa(s_x=0.05, s_y=0.05, s_z=0.05, t_x=-17, t_y = 4,t_z=-22, ka=0.8, kd=0.3, ks=0.0 ,modelDir="sofa")
+    desenhaI(s_x=2, s_y=0.5, s_z=2, t_x=-13.5, t_z = -14, ka=0.95 ,kd=0.0, ks=1.0 , ns=36.0, modelDir="stool")
+    desenhaI(s_x=0.32, s_y=0.3, s_z=0.32,t_x=-13.5, t_y= 2.2, t_z= -14,modelDir="caixa")
+    desenha_lamp(angle=180, r_x=1.0,r_z=0.0, s_x=0.3, s_y=0.3, s_z=0.3,t_x=-13.5, t_y= 2.7, t_z= -14,modelDir="luz")
+    desenhaI(s_x=0.8, s_y=0.8, s_z=0.8,t_y= 0, t_x=18, t_z=-13,  ka=1.0,kd=0.1,ks=0.0,modelDir="plant")
+    desenha_chair(angle=90, r_y=1.0 ,r_z=0.0,s_x=0.04, s_y=0.04, s_z=0.04,  t_x=16, t_z=-16, kd=0.5,ks=0.0,modelDir="chair");
+    desenhaM2I(angle=180, r_y=1.0,r_z=0.0,s_x=0.08, s_y=0.03, s_z=0.05,t_x=-13.5,t_y=1.0 ,t_z = -2.3, kd=0.4,ks=0.5, ns=30,  modelDir="cabinet")
+    desenhaM2I(angle=180,r_y=1.0,r_z=0.0,s_x=0.5,s_y=0.5,s_z=0.5,t_x= 18, t_z=3, t_y= 0.0, ka=1.0, kd=0.2,ks=0.0,modelDir="bed1")
+    desenhaM2I(angle=90,r_y=0.1,r_z=0.0,  s_x=0.04, s_y=0.06, s_z=0.08,t_y=2.0,t_x=-20.0, t_z = 12.5,modelDir="cabinet")
+    desenhaI(s_x=0.4, s_y=0.4, s_z=0.4, t_y=4.3,t_x=-18, t_z= 7,  ka=0.8,kd=0.6, ks=0.0, modelDir="plant")
+    desenhaI(s_x=0.4, s_y=0.4, s_z=0.4, t_y=4.3,t_x=-18, t_z= 16, ka=0.8,kd=0.6, ks=0.0, modelDir="plant")
+    desenhaM2I(angle=-90,r_y=0.1,r_z=0.0,  s_x=1.1, s_y=1.1, s_z=1.1,t_x=-16,  t_z = 12.5,ka=1.0, kd=0.4,modelDir="chair2")
+    desenhaM2I(angle=-90,r_y=0.1,r_z=0.0,  s_x=1.1, s_y=1.1, s_z=1.1,t_x=-16,  t_z = 10,ka=1.0, kd=0.4 ,modelDir="chair2")
+    desenhaM2I(angle=180, r_y=1.0,r_z=0.0, t_x=-13.5, t_y= 2.1,t_z=-4, ka=0.5, kd=0.8,ks=1.0,ns=56.0, modelDir="tv")
 
 #####################################################################################################
 
 
-    #exterior da casa
+    # #exterior da casa
 
 
-    # desenhaE(s_x=140, s_y=140, s_z=140, t_z=-40 , t_y = -2,ka=0.6, kd=0.0,modelDir="grass")
-    # desenhaE(s_x=10, s_z= 20, t_z= -50, t_y= -1.8,modelDir= "cobleStone")
-    # desenhaE(s_x=140, s_y=140, s_z=140, t_z=-40 , t_y = 90, ka=0.1, kd=1.0, ks=1.0, ns=40.0 , modelDir="sky")  
+    desenhaE(s_x=140, s_y=140, s_z=140, t_z=-40 , t_y = -2,ka=0.6, kd=0.0,modelDir="grass")
+    desenhaE(s_x=10, s_z= 20, t_z= -50, t_y= -1.8,modelDir= "cobleStone")
+    desenhaE(s_x=140, s_y=140, s_z=140, t_z=-40 , t_y = 90, ka=0.1, kd=1.0, ks=1.0, ns=40.0 , modelDir="sky")  
 
-    # if  sun_angle > 360:
-    #     sun_angle = 0.0
-    # sun_angle += 0.3;
+    if  sun_angle > 360:
+        sun_angle = 0.0
+    sun_angle += 0.3;
 
-    # desenha_sun(angle =sun_angle * 3, r_y=1.0, r_z=0.0, s_x= 1.0 ,s_y=1.0 ,s_z=1.0, t_z = -70 + 100 * math.sin(math.radians(sun_angle)) + 50, t_x = 100 * math.cos(math.radians(sun_angle)) ,t_y = 80, modelDir="sun")
+    desenha_sun(angle =sun_angle * 3, r_y=1.0, r_z=0.0, s_x= 1.0 ,s_y=1.0 ,s_z=1.0, t_z = -70 + 100 * math.sin(math.radians(sun_angle)) + 50, t_x = 110 * math.cos(math.radians(sun_angle)) ,t_y = 80, modelDir="sun")
 
-    # desenhaE(angle = 90 , r_z= 0 ,r_y = 1,s_x=140.0, s_z=14.0, t_z = -40, t_x = 40 ,t_y = -1.8,ka=0.5, ks=1.0, ns=60, modelDir="street")
-    # desenhaE(angle = 90 , r_z= 0 ,r_y = 1,s_x=140.0, s_z=20.0, t_z = 50, t_x = 40 ,t_y = -1.8, ka=1.0, kd=0.0,ks=0.0, modelDir="water")
+    desenhaE(angle = 90 , r_z= 0 ,r_y = 1,s_x=140.0, s_z=14.0, t_z = -40, t_x = 40 ,t_y = -1.8,ka=0.5, ks=1.0, ns=60, modelDir="street")
+    desenhaE(angle = 90 , r_z= 0 ,r_y = 1,s_x=140.0, s_z=20.0, t_z = 50, t_x = 40 ,t_y = -1.8, ka=1.0, kd=0.0,ks=0.0, modelDir="water")
   
-    # # desenhando golfinhos
+    # desenhando golfinhos
 
-    # if  dolphin_position < -150:
-    #     dolphin_position = 40
-    # dolphin_position -= 0.19
-    # ydp = fish_move(dolphin_position, 5, 40, True)
-    # desenhaM2E(angle= angle_dolphin,r_x=1.0,r_z = 0.0 ,s_x=1.1, s_y=1.1, s_z=1.1,t_z = dolphin_position , t_x = 45 ,t_y = -2.0 + ydp , ka=0.8, kd=0.2,  ks=1.0, ns=70.0, modelDir="dolphin")
-    # desenhaM2E(angle= angle_dolphin,r_x=1.0,r_z = 0.0 ,s_x=1.1, s_y=1.1, s_z=1.1,t_z = dolphin_position + 10, t_x = 40 ,t_y = -2.0 + ydp , ka=0.8, kd=0.2,  ks=1.0, ns=70.0, modelDir="dolphin")
+    if  dolphin_position < -150:
+        dolphin_position = 40
+    dolphin_position -= 0.19
+    ydp = fish_move(dolphin_position, 5, 40, True)
+    desenhaM2E(angle= angle_dolphin,r_x=1.0,r_z = 0.0 ,s_x=1.1, s_y=1.1, s_z=1.1,t_z = dolphin_position , t_x = 45 ,t_y = -2.0 + ydp , ka=0.8, kd=0.2,  ks=1.0, ns=70.0, modelDir="dolphin")
+    desenhaM2E(angle= angle_dolphin,r_x=1.0,r_z = 0.0 ,s_x=1.1, s_y=1.1, s_z=1.1,t_z = dolphin_position + 10, t_x = 40 ,t_y = -2.0 + ydp , ka=0.8, kd=0.2,  ks=1.0, ns=70.0, modelDir="dolphin")
 
-    # # desenhando baleia
+    # desenhando baleia
 
-    # if  whale_position < -150:
-    #     whale_position = 40
-    # whale_position -= 0.1
-    # ydw = fish_move(whale_position, 1, 40, False)
-    # desenhaM2E(angle=90,r_x=0.0,r_y = 1, r_z = 0 ,s_x=0.2, s_y=0.2, s_z=0.2,t_z = whale_position , t_x = 55 ,t_y = -2.5 + ydw , ka=0.6, kd=0.4, ks=1.0, ns=70.0 , modelDir="whale")
+    if  whale_position < -150:
+        whale_position = 40
+    whale_position -= 0.1
+    ydw = fish_move(whale_position, 1, 40, False)
+    desenhaM2E(angle=90,r_x=0.0,r_y = 1, r_z = 0 ,s_x=0.2, s_y=0.2, s_z=0.2,t_z = whale_position , t_x = 55 ,t_y = -2.5 + ydw , ka=0.6, kd=0.4, ks=1.0, ns=70.0 , modelDir="whale")
 
 
-    # # desenhando os aviões
-    # anglePlane += 1
-    # if anglePlane > 360:
-    #     anglePlane = 0.0
+    # desenhando os aviões
+    anglePlane += 1
+    if anglePlane > 360:
+        anglePlane = 0.0
 
-    # anglePlane2 = anglePlane + 90
-    # (planex1, planey2) = elipse( 50 , 40, anglePlane)
-    # desenhaM2E(angle=anglePlane,r_y=1.0,r_z=0,t_y= 40 + 10 * math.sin(math.radians(1.5 * anglePlane)), t_x = 5  + planex1, t_z=-70 + planey2,ka=0.7, kd=0.5, ks=0.0 ,  modelDir="plane1")
+    anglePlane2 = anglePlane + 90
+    (planex1, planey2) = elipse( 50 , 40, anglePlane)
+    desenhaM2E(angle=anglePlane,r_y=1.0,r_z=0,t_y= 40 + 10 * math.sin(math.radians(1.5 * anglePlane)), t_x = 5  + planex1, t_z=-70 + planey2,ka=0.7, kd=0.5, ks=0.0 ,  modelDir="plane1")
     
-    # (planex1, planey2) = elipse( 50 , 40, anglePlane2)
-    # desenhaM2E(angle=anglePlane2, s_z=0.7, s_y=0.7, s_x=0.7 ,r_y=1.0,r_z=0,t_y= 40 + 8 * math.sin(math.radians(1.5 * anglePlane)), t_x = 5  + planex1, t_z=-70 + planey2, ka=0.7, kd=0.5, ks=0.9, ns=60.0 ,modelDir="plane2")
+    (planex1, planey2) = elipse( 50 , 40, anglePlane2)
+    desenhaM2E(angle=anglePlane2, s_z=0.7, s_y=0.7, s_x=0.7 ,r_y=1.0,r_z=0,t_y= 40 + 8 * math.sin(math.radians(1.5 * anglePlane)), t_x = 5  + planex1, t_z=-70 + planey2, ka=0.7, kd=0.5, ks=0.9, ns=60.0 ,modelDir="plane2")
     
-
-    
-    # # desenha container
-    # desenhaM2E( s_z=0.8,s_y=0.6,s_x=0.8, t_y=4.8,t_x=5 , t_z= -100 ,ka=0.7, kd=0.5, ks=1.0, ns=150.0, modelDir="container")
-    if monstro_dance > 0:
-        monstro_dance = -0.02
-    else :
-        monstro_dance = 0.02
-
-    desenhaM2E( s_z=0.5 + monstro_dance,s_y=0.5 + monstro_dance,s_x=0.5 + monstro_dance, t_y=-1.0,t_x=-2 , t_z= -90 ,ka=0.4,kd=0.3 + (monstro_dance * 10), modelDir="librarian")
-    desenhaM2E( s_z=2,s_y=1.2,s_x=3, t_y=0.0,t_x=5 , t_z= -90 ,ka=1.0,kd=0.3 + (monstro_dance * 10), modelDir="caixa2")
-    desenhaM2E(angle=-90,r_y=1.0,r_z=0.0, s_z=1.3 + monstro_dance,s_y=1.3 + monstro_dance,s_x=1.3 + monstro_dance, t_y=1.5,t_x=4.5, t_z= -91 ,ka=0.4,kd=0.3 + (monstro_dance * 10), modelDir="monstro")
-    desenhaM2E(angle=180,r_y=1.0,r_z=0.0, s_z=0.5 + monstro_dance,s_y=0.5 + monstro_dance,s_x=0.5 + monstro_dance, t_y=-1.0,t_x=12, t_z= -90 , ka=0.4, kd=0.3 + (monstro_dance * 10), modelDir="librarian")
-
-
-    # # Faz a bola quicar
-    # if ball_position > 3:
-    #     x_ball_postion = -0.1;
-    # elif ball_position < -3:
-    #     x_ball_postion = 0.1;
-    # ball_position += x_ball_postion
-
-    # desenhaE(s_x=0.2, s_y=0.2, s_z=0.2,t_z= -55, t_x = 20 , t_y= ball_move(),  ka=1.0, kd=0.3, ks=0.9, ns=40.0, modelDir="ball")
 
     
-    # # movendo o carro
-    # if car_position < -125:
-    #     car_position = 40
-    # car_position -= 1
+    # desenha container
+    desenhaM2E( s_z=0.8,s_y=0.6,s_x=0.8, t_y=4.8,t_x=5 , t_z= -100 ,ka=0.7, kd=0.5, ks=1.0, ns=150.0, modelDir="container")
+    # if monstro_dance > 0:
+    #     monstro_dance = -0.02
+    # else :
+    #     monstro_dance = 0.02
 
-    # desenhaE(s_x=3.0, s_y=3.0 ,s_z=3.0, t_z = car_position, t_x = -33 ,t_y = -1.8,  ka=1.0, kd=0.3, ks=0.9, ns=40.0,  modelDir="car")    
+    desenhaM2E( s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=-2 , t_z= -90 ,ka=1.0,kd=0.3, modelDir="librarian")
+    desenhaM2E( s_z=2,s_y=1.2,s_x=3, t_y=0.0,t_x=5 , t_z= -90 ,ka=1.0,kd=0.3, modelDir="caixa2")
+    desenhaM2E(angle=-90,r_y=1.0,r_z=0.0, s_z=1.3,s_y=1.3,s_x=1.3, t_y=1.5,t_x=4.5, t_z= -91 ,ka=1.0,kd=0.3, modelDir="monstro")
+    desenhaM2E(angle=180,r_y=1.0,r_z=0.0, s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=12, t_z= -90 , ka=1.0, kd=0.3, modelDir="librarian")
+
+
+    # Faz a bola quicar
+    if ball_position > 3:
+        x_ball_postion = -0.1;
+    elif ball_position < -3:
+        x_ball_postion = 0.1;
+    ball_position += x_ball_postion
+
+    desenhaE(s_x=0.2, s_y=0.2, s_z=0.2,t_z= -55, t_x = 20 , t_y= ball_move(),  ka=1.0, kd=0.3, ks=0.9, ns=40.0, modelDir="ball")
+
+    
+    # movendo o carro
+    if car_position < -125:
+        car_position = 40
+    car_position -= 1
+
+    desenhaE(s_x=3.0, s_y=3.0 ,s_z=3.0, t_z = car_position, t_x = -33 ,t_y = -1.8,  ka=1.0, kd=0.3, ks=0.9, ns=40.0,  modelDir="car")    
 
 
 
