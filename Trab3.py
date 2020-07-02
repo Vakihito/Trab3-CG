@@ -597,7 +597,6 @@ car_position = - 125
 ball_position = -3
 x_ball_postion = 0.1
 angle_run_cat_dog = 0
-penguin_angle = 90;
 dolphin_position = 40
 angle_dolphin1 = 0
 whale_position = 40

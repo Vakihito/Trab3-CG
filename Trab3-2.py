@@ -8,7 +8,7 @@ from PIL import Image
 
 glfw.init()
 glfw.window_hint(glfw.VISIBLE, glfw.FALSE);
-altura = 1600
+altura = 1200
 largura = 1200
 window = glfw.create_window(largura, altura, "Iluminação", None, None)
 glfw.make_context_current(window)
@@ -315,22 +315,22 @@ def processObjects2Textures(dir, objFile, imageFile1, imageFile2):
 ################################################################
 
 
-processObjects("aya", "aya.obj", "aya.jpg")
-processObjects("beagle", "beagle.obj", "beagle.jpg")
-processObjects2Textures("chair", "chair.obj", "chair1.jpg", "chair2.PNG")
-processObjects("cottage", "cottage.obj", "cottage2.png")
-processObjects("table1", "table1.obj", "table1.png")
-processObjects_no_normal("floor1", "floor.obj", "floor.jpg")
-processObjects2Textures("sofa", "sofa.obj", "white.PNG", "wood.jpg")
-processObjects("stool", "stool.obj", "stool.png")
-processObjects("plant", "plant.obj", "plant.jpg")
-processObjects("tv", "tv.obj", "tv.png")
-processObjects("cabinet", "cabinet.obj", "cabinet.jpg")
-processObjects("bed", "bed1.obj", "Texture.png")
-processObjects("chair2", "chair2.obj", "chair2.jpg")
-processObjects("luz", "caixa2.obj", "luz.png")
-processObjects("caixa", "caixa2.obj", "wood.jpg")
-processObjects("floor", "floor2.obj", "floor.jpg")
+# processObjects("aya", "aya.obj", "aya.jpg")
+# processObjects("beagle", "beagle.obj", "beagle.jpg")
+# processObjects2Textures("chair", "chair.obj", "chair1.jpg", "chair2.PNG")
+# processObjects("cottage", "cottage.obj", "cottage2.png")
+# processObjects("table1", "table1.obj", "table1.png")
+# processObjects("floor1", "floor.obj", "floor.jpg")
+# processObjects2Textures("sofa", "sofa.obj", "white.PNG", "wood.jpg")
+# processObjects("stool", "stool.obj", "stool.png")
+# processObjects("plant", "plant.obj", "plant.jpg")
+# processObjects("tv", "tv.obj", "tv.png")
+# processObjects("cabinet", "cabinet.obj", "cabinet.jpg")
+# processObjects("bed", "bed1.obj", "Texture.png")
+# processObjects("chair2", "chair2.obj", "chair2.jpg")
+# processObjects("luz", "caixa2.obj", "luz.png")
+# processObjects("caixa", "caixa2.obj", "wood.jpg")
+# processObjects("floor", "floor2.obj", "floor.jpg")
 
 
 
@@ -344,23 +344,23 @@ processObjects("floor", "floor2.obj", "floor.jpg")
 # exterior da casa
 ################################################################
 
-# processObjects_no_normal("grass", "terreno2.obj", "grass.jpeg")
-# processObjects_no_normal("street", "terreno2.obj", "street.jpg")
-# processObjects_no_normal("water", "water.obj", "water5.jpg")
-# processObjects("car", "car.obj", "car.jpg")
-# processObjects("dogh", "doghouse.obj", "2_BaseColor.jpg")
-# processObjects("ball", "ball.obj", "ball.jpg")
-# processObjects("doberman", "dog2.obj", "Doberman_Pinscher_dif.jpg")
-# processObjects("cat", "cat.obj", "Cat_bump.jpg")
-# processObjects_no_normal("sky", "terreno2.obj", "sky2.jpg")
-# processObjects_no_normal("cobleStone", "floor.obj", "cobleStone.jpg")
-# processObjects("dolphin", "dolphin1.obj", "dolphin.jpg")
-# processObjects("whale", "whale.obj", "10054_Whale_Diffuse_v2.jpg")
-# processObjects("plane1", "plane1.obj", "plane1.jpg")
-# processObjects("plane2", "plane2.obj", "plane2.jpg")
-# processObjects("container", "container.obj", "12281_Container_diffuse.jpg")
-# processObjects("librarian", "librarian1.obj", "act_bibliotekar.jpg")
-# processObjects("sun", "sun2.obj", "sun.jpg")
+processObjects_no_normal("grass", "terreno2.obj", "grass.jpeg")
+processObjects_no_normal("street", "terreno2.obj", "street.jpg")
+processObjects_no_normal("water", "water.obj", "water5.jpg")
+processObjects("car", "car.obj", "car.jpg")
+processObjects("dogh", "doghouse.obj", "2_BaseColor.jpg")
+processObjects("ball", "ball.obj", "ball.jpg")
+processObjects("doberman", "dog2.obj", "Doberman_Pinscher_dif.jpg")
+processObjects("cat", "cat.obj", "Cat_bump.jpg")
+processObjects("sky", "terreno.obj", "sky2.jpg")
+processObjects_no_normal("cobleStone", "floor.obj", "cobleStone.jpg")
+processObjects("dolphin", "dolphin1.obj", "dolphin.jpg")
+processObjects("whale", "whale2.obj", "10054_Whale_Diffuse_v2.jpg")
+processObjects("plane1", "plane1.obj", "plane1.jpg")
+processObjects("plane2", "plane2.obj", "plane2.jpg")
+processObjects("container", "container.obj", "12281_Container_diffuse.jpg")
+processObjects("librarian", "librarian1.obj", "act_bibliotekar.jpg")
+processObjects("sun", "sun2.obj", "sun.jpg")
 
 
 
@@ -448,13 +448,13 @@ def desenha_lamp(angle=0.0,
     
     
 
-def desenha_sol(angle,
-                t_x, t_y, t_z,
-                r_x, r_y, r_z,
-                s_x, s_y, s_z,
-                modelDir="sun"):
+def desenha_sun(angle=0.0, 
+            r_x=0.0, r_y=0.0, r_z=1.0,
+            t_x=0.0, t_y=0.0, t_z=0.0,
+            s_x=1.0, s_y=1.0, s_z=1.0,
+            modelDir="sun"):
         
-    mat_model = model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
+    mat_model = model2(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
     loc_model = glGetUniformLocation(program, "model")
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
        
@@ -487,49 +487,6 @@ def desenha_sol(angle,
     
     # desenha o modelo
     glDrawArrays(GL_TRIANGLES, vertices_dict[modelDir][0], vertices_dict[modelDir][1] - vertices_dict[modelDir][0]) ## renderizando
-
-def desenha_chaleira():
-    
-
-    # aplica a matriz model
-    angle = 0.0
-    
-    r_x = 0.0; r_y = 1.0; r_z = 0.0;
-    
-    # translacao
-    t_x = 0.0; t_y = 0.0; t_z = 0.0;
-    
-    # escala
-    s_x = 0.1; s_y = 0.1; s_z = 0.1;
-    
-    mat_model = model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
-    loc_model = glGetUniformLocation(program, "model")
-    glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
-       
-    
-    #### define parametros de ilumincao do modelo
-    ns = 32.0 # expoente de reflexao especular
-    
-    loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
-    glUniform1f(loc_ka, ka_chaleira) ### envia ka pra gpu
-    
-    loc_kd = glGetUniformLocation(program, "kd") # recuperando localizacao da variavel kd na GPU
-    glUniform1f(loc_kd, kd_chaleira) ### envia kd pra gpu    
-    
-    loc_ks = glGetUniformLocation(program, "ks") # recuperando localizacao da variavel ks na GPU
-    glUniform1f(loc_ks, ks_chaleira) ### envia ks pra gpu        
-    
-    loc_ns = glGetUniformLocation(program, "ns") # recuperando localizacao da variavel ns na GPU
-    glUniform1f(loc_ns, ns) ### envia ns pra gpu        
-
-    
-    #define id da textura do modelo
-    glBindTexture(GL_TEXTURE_2D, 3)
-    
-    
-    # desenha o modelo
-    glDrawArrays(GL_TRIANGLES, 108, 415668-108) ## renderizando
-
 
 
 def sum_k(ka ,kd ,ks):
@@ -565,12 +522,13 @@ def desenha(angle=0.0,
             r_x=0.0, r_y=0.0, r_z=1.0,
             t_x=0.0, t_y=0.0, t_z=0.0,
             s_x=1.0, s_y=1.0, s_z=1.0,
-            ka=0.8, kd=0.25, ks=0.2, ns= 36.0,
+            ka=0.8, kd=0.25, ks=0.2, ns= 32.0,
             modelDir=""):
     mat_model = model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
     loc_model = glGetUniformLocation(program, "model")
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
-     #### define parametros de ilumincao do modelo
+
+    #### define parametros de ilumincao do modelo
     (ka, kd, ks) = sum_k(ka, kd, ks)
     
     loc_ka = glGetUniformLocation(program, "ka") # recuperando localizacao da variavel ka na GPU
@@ -663,7 +621,7 @@ def desenha_chair(angle=0.0,
             s_x=1.0, s_y=1.0, s_z=1.0,
             ka=0.8, kd=0.25, ks=0.2, ns= 36.0,
             modelDir=""):
-    mat_model = model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
+    mat_model = model2(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
     loc_model = glGetUniformLocation(program, "model")
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
     (ka, kd, ks) = sum_k(ka, kd, ks)
@@ -893,11 +851,56 @@ def projection():
     mat_projection = glm.perspective(glm.radians(45.0), largura/altura, 0.1, 1000.0)
     mat_projection = np.array(mat_projection)    
     return mat_projection
+
+def circle(angle, raio):
+    return (raio * math.sin(math.radians(angle)), raio * math.cos(math.radians(angle)) )
+
+angle_dolphin = -90
+def fish_move(x, raio, ini, dol):
+    global angle_dolphin
+    angle = math.radians(x - ini)
+    angle *= 7
+    if dol :
+        angle_dolphin -= 1
+        if  angle_dolphin < -90 and  -4.5 >  raio * math.sin(angle)  :
+            angle_dolphin = 90
+
+    return raio * math.sin(angle)
+
+
+def elipse(rx, rz, anglePlaneAux ):
+    
+    angleAux = math.radians( anglePlaneAux )
+    xr = rx * math.sin( angleAux )
+    zr = rz * math.cos( angleAux )
+
+    return (xr, zr)
+
+
+
+
+def ball_move():
+    #gt ^ 2/2
+    return - (ball_position ** 2) + 9
+
+car_position = - 125
+ball_position = -3
+x_ball_postion = 0.1
+angle_run_cat_dog = 0
+dolphin_position = 40
+angle_dolphin1 = 0
+whale_position = 40
+anglePlane = 0.0
+sun_angle = 0.0
+
+
+
+
 glfw.show_window(window)
 glfw.set_cursor_pos(window, lastX, lastY)
 glEnable(GL_DEPTH_TEST) ### importante para 3D
    
-ang = 0.1
+
     
 while not glfw.window_should_close(window):
 
@@ -906,7 +909,7 @@ while not glfw.window_should_close(window):
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     
-    glClearColor(0.5, 0.5, 0.5, 1.0)
+    glClearColor(0.2, 0.2, 0.2, 1.0)
     
     if polygonal_mode==True:
         glPolygonMode(GL_FRONT_AND_BACK,GL_LINE)
@@ -915,31 +918,120 @@ while not glfw.window_should_close(window):
     
      # interior da casa
     
+#####################################################################################################
+
+
     # ka=0.8, kd=0.25, ks=0.2, ns= 36.0,
 
-    desenha(s_x=0.005, s_y=0.005, s_z=0.005,t_x =-4, t_z=-19.8,ka=1.0,  kd=0.01,ks=0.0, modelDir="aya");
-    desenha(s_x=20, s_y=20, s_z=20, t_z = -10,t_y= 0.0001, ka= 1.0,kd=0.0, ks=0.6 ,modelDir="floor")
-    desenha(s_x=6, s_y=6, s_z=6, t_x = -14,t_z= 13, ka= 1.0,kd=0.0, ks=0.6,modelDir="floor")    
-    desenha_chair(s_x=0.04, s_y=0.04, s_z=0.04,t_x =-4 ,t_z=-20, ks=0.0 ,modelDir="chair");
-    desenha(angle=-90,r_x=1.0 ,r_z=0.0,s_x=0.05, s_y=0.05, s_z=0.05,t_y= -6, t_z=0,kd=0.5,modelDir="beagle")
-    desenha(s_x=3.58, s_y=5, s_z=4,t_x= -0.7, t_y = -2,t_z= -8, ks=0.0, modelDir="cottage")
-    desenha(angle=-90, r_y=1.0 ,r_z=0.0, s_x=0.013, s_y=0.013, s_z=0.013, t_y= 3, t_x=-18, t_z=-18,ka=1.0,kd=0.5 ,modelDir="table1")
-    desenha_sofa(s_x=0.05, s_y=0.05, s_z=0.05, t_x=-17, t_y = 4,t_z=-22, ka=0.8, kd=0.15, ks=0.0 ,modelDir="sofa")
-    desenha(s_x=2, s_y=0.5, s_z=2, t_x=-13.5, t_z = -14, ka=0.95 ,kd=0.0, ks=0.9 , ns=36.0 , modelDir="stool")
-    desenha(s_x=0.32, s_y=0.3, s_z=0.32,t_x=-13.5, t_y= 2.2, t_z= -14,modelDir="caixa")
-    desenha_lamp(angle=180, r_x=1.0,r_z=0.0, s_x=0.3, s_y=0.3, s_z=0.3,t_x=-13.5, t_y= 2.7, t_z= -14,modelDir="luz")
-    desenha(s_x=0.8, s_y=0.8, s_z=0.8,t_y= 0, t_x=18, t_z=-13,  ka=1.0,kd=0.1,ks=0.0,modelDir="plant")
-    desenha_chair(angle=90, r_y=1.0 ,r_z=0.0,s_x=0.04, s_y=0.04, s_z=0.04,  t_x=16, t_z=16, modelDir="chair");
-    desenhaM2(angle=180, r_y=1.0,r_z=0.0,s_x=0.08, s_y=0.03, s_z=0.05,t_x=-13.5,t_y=1.0 ,t_z = -2.3, kd=0.4,ks=0.5, ns=30,  modelDir="cabinet")
-    desenha(angle=-90 ,r_y=1.0,r_z=0.0,s_x=2.5,s_y=2.5,s_z=2.5,t_x= 5, t_z=-15, t_y= 2, ka=1.0, kd=0.01,ks=0.0,modelDir="bed")
-    desenha(angle=90,r_y=0.1,r_z=0.0,  s_x=0.08, s_y=0.06, s_z=0.04,t_y=2.0,t_x=-12.5, t_z = -20.0,modelDir="cabinet")
-    desenha(s_x=0.4, s_y=0.4, s_z=0.4, t_y=4.3,t_x=-18, t_z= 7,  ka=1.0,kd=0.001, ks=0.001, modelDir="plant")
-    desenha(s_x=0.4, s_y=0.4, s_z=0.4, t_y=4.3,t_x=-18, t_z= 16, ka=1.0,kd=0.001, ks=0.001, modelDir="plant")
-    desenha(angle=-90,r_y=0.1,r_z=0.0,  s_x=1.1, s_y=1.1, s_z=1.1,t_x=12.5,  t_z = 16,ka=1.0, kd=0.01,modelDir="chair2")
-    desenha(angle=-90,r_y=0.1,r_z=0.0,  s_x=1.1, s_y=1.1, s_z=1.1,t_x=10,  t_z = 16,ka=1.0, kd=0.01 ,modelDir="chair2")
-    desenha(angle=180, r_y=1.0,r_z=0.0, t_x=13.5, t_y= 2.1,t_z=4, ka=0.5, kd=0.7,ks=1.0,ns=56.0, modelDir="tv")
+    # interior da casa
+
+
+    # desenha(s_x=0.005, s_y=0.005, s_z=0.005,t_x =-4, t_z=-19.8,ka=0.8,  kd=0.5,ks=0.2, modelDir="aya");
+    # desenha(s_x=20, s_y=20, s_z=20, t_z = -10,t_y= 0.0001, ka= 1.0,kd=0.2, ks=0.6 ,modelDir="floor")
+    # desenha(s_x=6, s_y=6, s_z=6, t_x = -14,t_z= 13, ka= 1.0,kd=0.0, ks=0.0,modelDir="floor")    
+    # desenha_chair(s_x=0.04, s_y=0.04, s_z=0.04,t_x =-4 ,t_z=-20, kd=0.5, ks=0.0 ,modelDir="chair");
+    # desenhaM2(angle=-90,r_x=1.0 ,r_z=0.0,s_x=0.05, s_y=0.05, s_z=0.05,t_x=0.0,kd=0.7,modelDir="beagle")
+    # desenha(s_x=3.58, s_y=5, s_z=4,t_x= -0.7, t_y = -2,t_z= -8, ks=0.0, modelDir="cottage")
+    # desenhaM2(angle=-90, r_y=1.0 ,r_z=0.0, s_x=0.013, s_y=0.013, s_z=0.013, t_y= 3, t_x=18, t_z=-18,ka=1.0,kd=0.5, ks=0.3 ,modelDir="table1")
+    # desenha_sofa(s_x=0.05, s_y=0.05, s_z=0.05, t_x=-17, t_y = 4,t_z=-22, ka=0.8, kd=0.3, ks=0.0 ,modelDir="sofa")
+    # desenha(s_x=2, s_y=0.5, s_z=2, t_x=-13.5, t_z = -14, ka=0.95 ,kd=0.0, ks=1.0 , ns=36.0, modelDir="stool")
+    # desenha(s_x=0.32, s_y=0.3, s_z=0.32,t_x=-13.5, t_y= 2.2, t_z= -14,modelDir="caixa")
+    # desenha_lamp(angle=180, r_x=1.0,r_z=0.0, s_x=0.3, s_y=0.3, s_z=0.3,t_x=-13.5, t_y= 2.7, t_z= -14,modelDir="luz")
+    # desenha(s_x=0.8, s_y=0.8, s_z=0.8,t_y= 0, t_x=18, t_z=-13,  ka=1.0,kd=0.1,ks=0.0,modelDir="plant")
+    # desenha_chair(angle=90, r_y=1.0 ,r_z=0.0,s_x=0.04, s_y=0.04, s_z=0.04,  t_x=16, t_z=-16, kd=0.5,ks=0.0,modelDir="chair");
+    # desenhaM2(angle=180, r_y=1.0,r_z=0.0,s_x=0.08, s_y=0.03, s_z=0.05,t_x=-13.5,t_y=1.0 ,t_z = -2.3, kd=0.4,ks=0.5, ns=30,  modelDir="cabinet")
+    # desenhaM2(angle=-90 ,r_y=1.0,r_z=0.0,s_x=2.5,s_y=2.5,s_z=2.5,t_x= 15, t_z=5, t_y= 2, ka=1.0, kd=0.1,ks=0.0,modelDir="bed")
+    # desenhaM2(angle=90,r_y=0.1,r_z=0.0,  s_x=0.04, s_y=0.06, s_z=0.08,t_y=2.0,t_x=-20.0, t_z = 12.5,modelDir="cabinet")
+    # desenha(s_x=0.4, s_y=0.4, s_z=0.4, t_y=4.3,t_x=-18, t_z= 7,  ka=0.8,kd=0.6, ks=0.0, modelDir="plant")
+    # desenha(s_x=0.4, s_y=0.4, s_z=0.4, t_y=4.3,t_x=-18, t_z= 16, ka=0.8,kd=0.6, ks=0.0, modelDir="plant")
+    # desenhaM2(angle=-90,r_y=0.1,r_z=0.0,  s_x=1.1, s_y=1.1, s_z=1.1,t_x=-16,  t_z = 12.5,ka=1.0, kd=0.4,modelDir="chair2")
+    # desenhaM2(angle=-90,r_y=0.1,r_z=0.0,  s_x=1.1, s_y=1.1, s_z=1.1,t_x=-16,  t_z = 10,ka=1.0, kd=0.4 ,modelDir="chair2")
+    # desenhaM2(angle=180, r_y=1.0,r_z=0.0, t_x=-13.5, t_y= 2.1,t_z=-4, ka=0.5, kd=0.8,ks=1.0,ns=56.0, modelDir="tv")
+
+#####################################################################################################
+
+
+    #exterior da casa
+
+
+    # desenha(s_x=140, s_y=140, s_z=140, t_z=-40 , t_y = -2,modelDir="grass")
+    # desenha(s_x=10, s_z= 20, t_z= -50, t_y= -1.8,modelDir= "cobleStone")
+    # desenha(s_x=140, s_y=140, s_z=140, t_z=-40 , t_y = 90, ka=0.1, kd=0.5, ks=1.0, ns=20.0 , modelDir="sky")  
+
+    # if  sun_angle > 360:
+    #     sun_angle = 0.0
+    # sun_angle += 0.3;
+
+    # desenha_sun(angle =sun_angle * 3, r_y=1.0, r_z=0.0, s_x= 3.0 ,s_y=3.0 ,s_z=3.0, t_z = -70 + 100 * math.sin(math.radians(sun_angle)) + 50, t_x = 100 * math.cos(math.radians(sun_angle)) ,t_y = 80, modelDir="sun")
+
+    # desenha(angle = 90 , r_z= 0 ,r_y = 1,s_x=140.0, s_z=14.0, t_z = -40, t_x = 40 ,t_y = -1.8, modelDir="street")
+    # desenha(angle = 90 , r_z= 0 ,r_y = 1,s_x=140.0, s_z=20.0, t_z = 50, t_x = 40 ,t_y = -1.8, modelDir="water")
+  
+    # # desenhando golfinhos
+
+    # if  dolphin_position < -150:
+    #     dolphin_position = 40
+    # dolphin_position -= 0.19
+    # ydp = fish_move(dolphin_position, 5, 40, True)
+    # desenhaM2(angle= angle_dolphin,r_x=1.0,r_z = 0.0 ,s_x=1.1, s_y=1.1, s_z=1.1,t_z = dolphin_position , t_x = 45 ,t_y = -2.0 + ydp , ka=1.0, kd=0.01, ks=0.0, modelDir="dolphin")
+    # desenhaM2(angle= angle_dolphin,r_x=1.0,r_z = 0.0 ,s_x=1.1, s_y=1.1, s_z=1.1,t_z = dolphin_position + 10, t_x = 40 ,t_y = -2.0 + ydp , ka=1.0, kd=0.01, ks=0.0 , modelDir="dolphin")
+
+    # # desenha baleia
+
+    # if  whale_position < -150:
+    #     whale_position = 40
+    # whale_position -= 0.1
+    # ydw = fish_move(whale_position, 1, 40, False)
+    # desenhaM2(angle=90,r_x=0.0,r_y = 1, r_z = 0 ,s_x=0.2, s_y=0.2, s_z=0.2,t_z = whale_position , t_x = 55 ,t_y = -2.5 + ydw , ka=1.0, kd=0.01, ks=0.0 , modelDir="whale")
+
+
+    # # desenhando os aviões
+    # anglePlane += 1
+    # if anglePlane > 360:
+    #     anglePlane = 0.0
+
+    # anglePlane2 = anglePlane + 90
+    # (planex1, planey2) = elipse( 50 , 40, anglePlane)
+    # desenhaM2(angle=anglePlane,r_y=1.0,r_z=0,t_y= 40 + 10 * math.sin(math.radians(1.5 * anglePlane)), t_x = 5  + planex1, t_z=-70 + planey2,ka=1.0, kd=0.01 ,  modelDir="plane1")
+    
+    # (planex1, planey2) = elipse( 50 , 40, anglePlane2)
+    # desenhaM2(angle=anglePlane2, s_z=0.7, s_y=0.7, s_x=0.7 ,r_y=1.0,r_z=0,t_y= 40 + 8 * math.sin(math.radians(1.5 * anglePlane)), t_x = 5  + planex1, t_z=-70 + planey2, ka=1.0, kd=0.01 ,modelDir="plane2")
+    
 
     
+    # # desenha container
+    # desenhaM2( s_z=0.8,s_y=0.6,s_x=0.8, t_y=4.8,t_x=5 , t_z= -100 ,ka=0.6, kd=0.5, ks=1.0, ns=100.0, modelDir="container")
+    # desenhaM2( s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=-2 , t_z= -90 ,ka=1.0,kd=0.01, ks=0.0, ns=0.0, modelDir="librarian")
+    # desenhaM2(angle=180,r_y=1.0,r_z=0.0, s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=12, t_z= -90 , ka=1.0, kd=0.01, ks=0.0, ns=0.0, modelDir="librarian")
+
+
+    # # Faz a bola quicar
+    # if ball_position > 3:
+    #     x_ball_postion = -0.1;
+    # elif ball_position < -3:
+    #     x_ball_postion = 0.1;
+    # ball_position += x_ball_postion
+
+    # desenha(s_x=0.2, s_y=0.2, s_z=0.2,t_z= -55, t_x = 20 , t_y= ball_move(),  ka=1.0, kd=0.01, ks=0.0, ns=0.0, modelDir="ball")
+
+    
+    # # movendo o carro
+    # if car_position < -125:
+    #     car_position = 40
+    # car_position -= 1
+
+    # desenha(s_x=3.0, s_y=3.0 ,s_z=3.0, t_z = car_position, t_x = -33 ,t_y = -1.8,  ka=1.0, kd=0.01, ks=0.0, ns=0.0,  modelDir="car")    
+
+
+
+
+
+
+
+
+
+#####################################################################################################
+
     mat_view = view()
     loc_view = glGetUniformLocation(program, "view")
     glUniformMatrix4fv(loc_view, 1, GL_FALSE, mat_view)
