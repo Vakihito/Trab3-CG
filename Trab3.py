@@ -344,10 +344,10 @@ def processObjects2Textures(dir, objFile, imageFile1, imageFile2):
 # processObjects("plant", "plant.obj", "plant.jpg")
 # processObjects("tv", "tv.obj", "tv.png")
 # processObjects("cabinet", "cabinet.obj", "cabinet.jpg")
-# processObjects("bed", "bed1.obj", "Texture.png")
+# processObjects("bed1", "bed.obj", "bed.jpg")
 # processObjects("chair2", "chair2.obj", "chair2.jpg")
-processObjects("luz", "caixa2.obj", "luz.png")
-processObjects("caixa", "caixa2.obj", "wood.jpg")
+# processObjects("luz", "caixa2.obj", "luz.png")
+# processObjects("caixa", "caixa2.obj", "wood.jpg")
 # processObjects("floor", "floor2.obj", "floor.jpg")
 
 
@@ -362,22 +362,24 @@ processObjects("caixa", "caixa2.obj", "wood.jpg")
 # exterior da casa
 ################################################################
 
-processObjects("grass", "terreno2.obj", "grass.jpeg")
-processObjects("street", "terreno2.obj", "street.jpg")
-processObjects("water", "water.obj", "water5.jpg")
-processObjects("car", "car.obj", "car.jpg")
-processObjects("dogh", "doghouse.obj", "2_BaseColor.jpg")
-processObjects("ball", "ball.obj", "ball.jpg")
-processObjects("doberman", "dog2.obj", "Doberman_Pinscher_dif.jpg")
-processObjects("cat", "cat.obj", "Cat_bump.jpg")
-processObjects("sky", "terreno.obj", "sky2.jpg")
-processObjects("cobleStone", "floor.obj", "cobleStone.jpg")
-processObjects("dolphin", "dolphin1.obj", "dolphin.jpg")
-processObjects("whale", "whale2.obj", "10054_Whale_Diffuse_v2.jpg")
-processObjects("plane1", "plane1.obj", "plane1.jpg")
-processObjects("plane2", "plane2.obj", "plane2.jpg")
-processObjects("container", "container.obj", "12281_Container_diffuse.jpg")
+# processObjects("grass", "terreno2.obj", "grass.jpeg")
+# processObjects("street", "terreno2.obj", "street.jpg")
+# processObjects("water", "water.obj", "water5.jpg")
+# processObjects("car", "car.obj", "car.jpg")
+# processObjects("dogh", "doghouse.obj", "2_BaseColor.jpg")
+# processObjects("ball", "ball.obj", "ball.jpg")
+# processObjects("doberman", "dog2.obj", "Doberman_Pinscher_dif.jpg")
+# processObjects("cat", "cat.obj", "Cat_bump.jpg")
+# processObjects("sky", "terreno.obj", "sky2.jpg")
+# processObjects("cobleStone", "floor.obj", "cobleStone.jpg")
+# processObjects("dolphin", "dolphin1.obj", "dolphin.jpg")
+# processObjects("whale", "whale2.obj", "10054_Whale_Diffuse_v2.jpg")
+# processObjects("plane1", "plane1.obj", "plane1.jpg")
+# processObjects("plane2", "plane2.obj", "plane2.jpg")
+# processObjects("container", "container.obj", "12281_Container_diffuse.jpg")
 processObjects("librarian", "librarian1.obj", "act_bibliotekar.jpg")
+processObjects("monstro", "monstro.obj", "monstro.jpg")
+processObjects("caixa2", "caixa.obj", "caixa.jpg")
 processObjects("sun", "moon.obj", "moon.jpg")
 
 
@@ -1020,11 +1022,11 @@ while not glfw.window_should_close(window):
     # desenha_sofa(s_x=0.05, s_y=0.05, s_z=0.05, t_x=-17, t_y = 4,t_z=-22, ka=0.8, kd=0.3, ks=0.0 ,modelDir="sofa")
     # desenhaI(s_x=2, s_y=0.5, s_z=2, t_x=-13.5, t_z = -14, ka=0.95 ,kd=0.0, ks=1.0 , ns=36.0, modelDir="stool")
     # desenhaI(s_x=0.32, s_y=0.3, s_z=0.32,t_x=-13.5, t_y= 2.2, t_z= -14,modelDir="caixa")
-    desenha_lamp(angle=180, r_x=1.0,r_z=0.0, s_x=0.3, s_y=0.3, s_z=0.3,t_x=-13.5, t_y= 2.7, t_z= -14,modelDir="luz")
+    # desenha_lamp(angle=180, r_x=1.0,r_z=0.0, s_x=0.3, s_y=0.3, s_z=0.3,t_x=-13.5, t_y= 2.7, t_z= -14,modelDir="luz")
     # desenhaI(s_x=0.8, s_y=0.8, s_z=0.8,t_y= 0, t_x=18, t_z=-13,  ka=1.0,kd=0.1,ks=0.0,modelDir="plant")
     # desenha_chair(angle=90, r_y=1.0 ,r_z=0.0,s_x=0.04, s_y=0.04, s_z=0.04,  t_x=16, t_z=-16, kd=0.5,ks=0.0,modelDir="chair");
     # desenhaM2I(angle=180, r_y=1.0,r_z=0.0,s_x=0.08, s_y=0.03, s_z=0.05,t_x=-13.5,t_y=1.0 ,t_z = -2.3, kd=0.4,ks=0.5, ns=30,  modelDir="cabinet")
-    # desenhaM2I(angle=-90 ,r_y=1.0,r_z=0.0,s_x=2.5,s_y=2.5,s_z=2.5,t_x= 15, t_z=5, t_y= 2, ka=1.0, kd=0.1,ks=0.0,modelDir="bed")
+    # desenhaM2I(angle=180,r_y=1.0,r_z=0.0,s_x=0.5,s_y=0.5,s_z=0.5,t_x= 18, t_z=3, t_y= 0.0, ka=1.0, kd=0.2,ks=0.0,modelDir="bed1")
     # desenhaM2I(angle=90,r_y=0.1,r_z=0.0,  s_x=0.04, s_y=0.06, s_z=0.08,t_y=2.0,t_x=-20.0, t_z = 12.5,modelDir="cabinet")
     # desenhaI(s_x=0.4, s_y=0.4, s_z=0.4, t_y=4.3,t_x=-18, t_z= 7,  ka=0.8,kd=0.6, ks=0.0, modelDir="plant")
     # desenhaI(s_x=0.4, s_y=0.4, s_z=0.4, t_y=4.3,t_x=-18, t_z= 16, ka=0.8,kd=0.6, ks=0.0, modelDir="plant")
@@ -1085,8 +1087,13 @@ while not glfw.window_should_close(window):
     
     # # desenha container
     # desenhaM2E( s_z=0.8,s_y=0.6,s_x=0.8, t_y=4.8,t_x=5 , t_z= -100 ,ka=0.7, kd=0.5, ks=1.0, ns=150.0, modelDir="container")
-    # desenhaM2E( s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=-2 , t_z= -90 ,ka=1.0,kd=0.3, modelDir="librarian")
-    # desenhaM2E(angle=180,r_y=1.0,r_z=0.0, s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=12, t_z= -90 , ka=1.0, kd=0.3, modelDir="librarian")
+    desenhaM2E( s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=-2 , t_z= -90 ,ka=1.0,kd=0.3, modelDir="librarian")
+    
+    desenhaM2E( s_z=2,s_y=1.2,s_x=3, t_y=0.0,t_x=5 , t_z= -90 ,ka=1.0,kd=0.3, modelDir="caixa2")
+
+    desenhaM2E(angle=-90,r_y=1.0,r_z=0.0, s_z=1.3,s_y=1.3,s_x=1.3, t_y=1.5,t_x=4.5, t_z= -91 ,ka=1.0,kd=0.3, modelDir="monstro")
+
+    desenhaM2E(angle=180,r_y=1.0,r_z=0.0, s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=12, t_z= -90 , ka=1.0, kd=0.3, modelDir="librarian")
 
 
     # # Faz a bola quicar
