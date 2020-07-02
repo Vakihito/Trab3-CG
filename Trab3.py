@@ -1092,10 +1092,10 @@ while not glfw.window_should_close(window):
     else :
         monstro_dance = 0.02
 
-    desenhaM2E( s_z=0.5 + monstro_dance,s_y=0.5 + monstro_dance,s_x=0.5 + monstro_dance, t_y=-1.0,t_x=-2 , t_z= -90 ,ka=1.0,kd=0.3, modelDir="librarian")
-    desenhaM2E( s_z=2,s_y=1.2,s_x=3, t_y=0.0,t_x=5 , t_z= -90 ,ka=1.0,kd=0.3, modelDir="caixa2")
-    desenhaM2E(angle=-90,r_y=1.0,r_z=0.0, s_z=1.3 + monstro_dance,s_y=1.3 + monstro_dance,s_x=1.3 + monstro_dance, t_y=1.5,t_x=4.5, t_z= -91 ,ka=1.0,kd=0.3, modelDir="monstro")
-    desenhaM2E(angle=180,r_y=1.0,r_z=0.0, s_z=0.5 + monstro_dance,s_y=0.5 + monstro_dance,s_x=0.5 + monstro_dance, t_y=-1.0,t_x=12, t_z= -90 , ka=1.0, kd=0.3, modelDir="librarian")
+    desenhaM2E( s_z=0.5 + monstro_dance,s_y=0.5 + monstro_dance,s_x=0.5 + monstro_dance, t_y=-1.0,t_x=-2 , t_z= -90 ,ka=0.4,kd=0.3 + (monstro_dance * 10), modelDir="librarian")
+    desenhaM2E( s_z=2,s_y=1.2,s_x=3, t_y=0.0,t_x=5 , t_z= -90 ,ka=1.0,kd=0.3 + (monstro_dance * 10), modelDir="caixa2")
+    desenhaM2E(angle=-90,r_y=1.0,r_z=0.0, s_z=1.3 + monstro_dance,s_y=1.3 + monstro_dance,s_x=1.3 + monstro_dance, t_y=1.5,t_x=4.5, t_z= -91 ,ka=0.4,kd=0.3 + (monstro_dance * 10), modelDir="monstro")
+    desenhaM2E(angle=180,r_y=1.0,r_z=0.0, s_z=0.5 + monstro_dance,s_y=0.5 + monstro_dance,s_x=0.5 + monstro_dance, t_y=-1.0,t_x=12, t_z= -90 , ka=0.4, kd=0.3 + (monstro_dance * 10), modelDir="librarian")
 
 
     # # Faz a bola quicar
