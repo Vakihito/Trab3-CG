@@ -378,7 +378,7 @@ processObjects("plane1", "plane1.obj", "plane1.jpg")
 processObjects("plane2", "plane2.obj", "plane2.jpg")
 processObjects("container", "container.obj", "12281_Container_diffuse.jpg")
 processObjects("librarian", "librarian1.obj", "act_bibliotekar.jpg")
-processObjects("sun", "sun2.obj", "sun.jpg")
+processObjects("sun", "moon.obj", "moon.jpg")
 
 
 
@@ -1038,73 +1038,73 @@ while not glfw.window_should_close(window):
     #exterior da casa
 
 
-    desenhaE(s_x=140, s_y=140, s_z=140, t_z=-40 , t_y = -2,ka=0.6, kd=0.0,modelDir="grass")
-    desenhaE(s_x=10, s_z= 20, t_z= -50, t_y= -1.8,modelDir= "cobleStone")
-    desenhaE(s_x=140, s_y=140, s_z=140, t_z=-40 , t_y = 90, ka=0., kd=0.9, ks=1.0, ns=40.0 , modelDir="sky")  
+    # desenhaE(s_x=140, s_y=140, s_z=140, t_z=-40 , t_y = -2,ka=0.6, kd=0.0,modelDir="grass")
+    # desenhaE(s_x=10, s_z= 20, t_z= -50, t_y= -1.8,modelDir= "cobleStone")
+    # desenhaE(s_x=140, s_y=140, s_z=140, t_z=-40 , t_y = 90, ka=0.1, kd=1.0, ks=1.0, ns=40.0 , modelDir="sky")  
 
-    if  sun_angle > 360:
-        sun_angle = 0.0
-    sun_angle += 0.3;
+    # if  sun_angle > 360:
+    #     sun_angle = 0.0
+    # sun_angle += 0.3;
 
-    desenha_sun(angle =sun_angle * 3, r_y=1.0, r_z=0.0, s_x= 3.0 ,s_y=3.0 ,s_z=3.0, t_z = -70 + 100 * math.sin(math.radians(sun_angle)) + 50, t_x = 100 * math.cos(math.radians(sun_angle)) ,t_y = 80, modelDir="sun")
+    # desenha_sun(angle =sun_angle * 3, r_y=1.0, r_z=0.0, s_x= 1.0 ,s_y=1.0 ,s_z=1.0, t_z = -70 + 100 * math.sin(math.radians(sun_angle)) + 50, t_x = 100 * math.cos(math.radians(sun_angle)) ,t_y = 80, modelDir="sun")
 
-    desenhaE(angle = 90 , r_z= 0 ,r_y = 1,s_x=140.0, s_z=14.0, t_z = -40, t_x = 40 ,t_y = -1.8,ka=0.5, ks=1.0, ns=60, modelDir="street")
-    desenhaE(angle = 90 , r_z= 0 ,r_y = 1,s_x=140.0, s_z=20.0, t_z = 50, t_x = 40 ,t_y = -1.8, ka=1.0, kd=0.0,ks=0.0, modelDir="water")
+    # desenhaE(angle = 90 , r_z= 0 ,r_y = 1,s_x=140.0, s_z=14.0, t_z = -40, t_x = 40 ,t_y = -1.8,ka=0.5, ks=1.0, ns=60, modelDir="street")
+    # desenhaE(angle = 90 , r_z= 0 ,r_y = 1,s_x=140.0, s_z=20.0, t_z = 50, t_x = 40 ,t_y = -1.8, ka=1.0, kd=0.0,ks=0.0, modelDir="water")
   
-    # desenhando golfinhos
+    # # desenhando golfinhos
 
-    if  dolphin_position < -150:
-        dolphin_position = 40
-    dolphin_position -= 0.19
-    ydp = fish_move(dolphin_position, 5, 40, True)
-    desenhaM2E(angle= angle_dolphin,r_x=1.0,r_z = 0.0 ,s_x=1.1, s_y=1.1, s_z=1.1,t_z = dolphin_position , t_x = 45 ,t_y = -2.0 + ydp , ka=0.8, kd=0.2,  ks=1.0, ns=70.0, modelDir="dolphin")
-    desenhaM2E(angle= angle_dolphin,r_x=1.0,r_z = 0.0 ,s_x=1.1, s_y=1.1, s_z=1.1,t_z = dolphin_position + 10, t_x = 40 ,t_y = -2.0 + ydp , ka=0.8, kd=0.2,  ks=1.0, ns=70.0, modelDir="dolphin")
+    # if  dolphin_position < -150:
+    #     dolphin_position = 40
+    # dolphin_position -= 0.19
+    # ydp = fish_move(dolphin_position, 5, 40, True)
+    # desenhaM2E(angle= angle_dolphin,r_x=1.0,r_z = 0.0 ,s_x=1.1, s_y=1.1, s_z=1.1,t_z = dolphin_position , t_x = 45 ,t_y = -2.0 + ydp , ka=0.8, kd=0.2,  ks=1.0, ns=70.0, modelDir="dolphin")
+    # desenhaM2E(angle= angle_dolphin,r_x=1.0,r_z = 0.0 ,s_x=1.1, s_y=1.1, s_z=1.1,t_z = dolphin_position + 10, t_x = 40 ,t_y = -2.0 + ydp , ka=0.8, kd=0.2,  ks=1.0, ns=70.0, modelDir="dolphin")
 
-    # desenhando baleia
+    # # desenhando baleia
 
-    if  whale_position < -150:
-        whale_position = 40
-    whale_position -= 0.1
-    ydw = fish_move(whale_position, 1, 40, False)
-    desenhaM2E(angle=90,r_x=0.0,r_y = 1, r_z = 0 ,s_x=0.2, s_y=0.2, s_z=0.2,t_z = whale_position , t_x = 55 ,t_y = -2.5 + ydw , ka=0.6, kd=0.4, ks=1.0, ns=70.0 , modelDir="whale")
+    # if  whale_position < -150:
+    #     whale_position = 40
+    # whale_position -= 0.1
+    # ydw = fish_move(whale_position, 1, 40, False)
+    # desenhaM2E(angle=90,r_x=0.0,r_y = 1, r_z = 0 ,s_x=0.2, s_y=0.2, s_z=0.2,t_z = whale_position , t_x = 55 ,t_y = -2.5 + ydw , ka=0.6, kd=0.4, ks=1.0, ns=70.0 , modelDir="whale")
 
 
-    # desenhando os aviões
-    anglePlane += 1
-    if anglePlane > 360:
-        anglePlane = 0.0
+    # # desenhando os aviões
+    # anglePlane += 1
+    # if anglePlane > 360:
+    #     anglePlane = 0.0
 
-    anglePlane2 = anglePlane + 90
-    (planex1, planey2) = elipse( 50 , 40, anglePlane)
-    desenhaM2E(angle=anglePlane,r_y=1.0,r_z=0,t_y= 40 + 10 * math.sin(math.radians(1.5 * anglePlane)), t_x = 5  + planex1, t_z=-70 + planey2,ka=0.7, kd=0.5, ks=0.0 ,  modelDir="plane1")
+    # anglePlane2 = anglePlane + 90
+    # (planex1, planey2) = elipse( 50 , 40, anglePlane)
+    # desenhaM2E(angle=anglePlane,r_y=1.0,r_z=0,t_y= 40 + 10 * math.sin(math.radians(1.5 * anglePlane)), t_x = 5  + planex1, t_z=-70 + planey2,ka=0.7, kd=0.5, ks=0.0 ,  modelDir="plane1")
     
-    (planex1, planey2) = elipse( 50 , 40, anglePlane2)
-    desenhaM2E(angle=anglePlane2, s_z=0.7, s_y=0.7, s_x=0.7 ,r_y=1.0,r_z=0,t_y= 40 + 8 * math.sin(math.radians(1.5 * anglePlane)), t_x = 5  + planex1, t_z=-70 + planey2, ka=0.7, kd=0.5, ks=0.9, ns=60.0 ,modelDir="plane2")
+    # (planex1, planey2) = elipse( 50 , 40, anglePlane2)
+    # desenhaM2E(angle=anglePlane2, s_z=0.7, s_y=0.7, s_x=0.7 ,r_y=1.0,r_z=0,t_y= 40 + 8 * math.sin(math.radians(1.5 * anglePlane)), t_x = 5  + planex1, t_z=-70 + planey2, ka=0.7, kd=0.5, ks=0.9, ns=60.0 ,modelDir="plane2")
     
-
-    
-    # desenha container
-    desenhaM2E( s_z=0.8,s_y=0.6,s_x=0.8, t_y=4.8,t_x=5 , t_z= -100 ,ka=0.7, kd=0.5, ks=1.0, ns=150.0, modelDir="container")
-    desenhaM2E( s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=-2 , t_z= -90 ,ka=1.0,kd=0.3, modelDir="librarian")
-    desenhaM2E(angle=180,r_y=1.0,r_z=0.0, s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=12, t_z= -90 , ka=1.0, kd=0.3, modelDir="librarian")
-
-
-    # Faz a bola quicar
-    if ball_position > 3:
-        x_ball_postion = -0.1;
-    elif ball_position < -3:
-        x_ball_postion = 0.1;
-    ball_position += x_ball_postion
-
-    desenhaE(s_x=0.2, s_y=0.2, s_z=0.2,t_z= -55, t_x = 20 , t_y= ball_move(),  ka=1.0, kd=0.3, ks=0.9, ns=40.0, modelDir="ball")
 
     
-    # movendo o carro
-    if car_position < -125:
-        car_position = 40
-    car_position -= 1
+    # # desenha container
+    # desenhaM2E( s_z=0.8,s_y=0.6,s_x=0.8, t_y=4.8,t_x=5 , t_z= -100 ,ka=0.7, kd=0.5, ks=1.0, ns=150.0, modelDir="container")
+    # desenhaM2E( s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=-2 , t_z= -90 ,ka=1.0,kd=0.3, modelDir="librarian")
+    # desenhaM2E(angle=180,r_y=1.0,r_z=0.0, s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=12, t_z= -90 , ka=1.0, kd=0.3, modelDir="librarian")
 
-    desenhaE(s_x=3.0, s_y=3.0 ,s_z=3.0, t_z = car_position, t_x = -33 ,t_y = -1.8,  ka=1.0, kd=0.3, ks=0.9, ns=40.0,  modelDir="car")    
+
+    # # Faz a bola quicar
+    # if ball_position > 3:
+    #     x_ball_postion = -0.1;
+    # elif ball_position < -3:
+    #     x_ball_postion = 0.1;
+    # ball_position += x_ball_postion
+
+    # desenhaE(s_x=0.2, s_y=0.2, s_z=0.2,t_z= -55, t_x = 20 , t_y= ball_move(),  ka=1.0, kd=0.3, ks=0.9, ns=40.0, modelDir="ball")
+
+    
+    # # movendo o carro
+    # if car_position < -125:
+    #     car_position = 40
+    # car_position -= 1
+
+    # desenhaE(s_x=3.0, s_y=3.0 ,s_z=3.0, t_z = car_position, t_x = -33 ,t_y = -1.8,  ka=1.0, kd=0.3, ks=0.9, ns=40.0,  modelDir="car")    
 
 
 
