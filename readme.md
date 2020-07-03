@@ -17,17 +17,16 @@ Em relação aos requisitos do trabalho :
     8) OK
     9) OK
     10) É bem notório pelo céu, pela chão da casa, pela TV e pela mesa. Mas em outros modelos isso também é perceptível, como no container, na baleia e no golfinho.
-obs : a tecla "i" entre no modo polígono, as teclas "1" e "2", regulam o ka, "3" e "4", regulam o kd, e as teclas "5" e "6" regulam o ks. Talvez o programa fique um pouco travado, porque há muitos modelos sendo carregados e desenhados.
-
+obs : a tecla "i" entre no modo polígono, as teclas "1" e "2", regulam o ka, "3" e "4", regulam o kd, e as teclas "5" e "6" regulam o ks. Talvez o programa fique um pouco travado, porque há muitos modelos sendo carregados e desenhados. Qualquer problema meu e-mail é : akihito012@usp.br.
 
 
 Vídeo :
     O vídeo não ficou muito bom porque meu computador não é dos melhores. Desta forma, ao rodar o programa e gravar meu computador não aguentou, desculpa... Porém creio que quando o senhor rodar em seu computador irá funcionar melhor, pelo menos quando não estou gravando o programa funciona melhor. 
+    Segue o link para o vídeo :
     https://www.youtube.com/watch?v=6v-fEJR-SuI&feature=youtu.be
 
 
 
-Agradecimento:
-    Professor muito obrigado pelo semestre, foi bom aprender a matéria, principalmente da forma que o senhor nos apresentou. Também queria lhe agradecer por ser paciente e educado. Por fim, muito obrigado por ter me ajudado muito ao longo do semestre. 
 
-Qualquer dificuldade : akihito012@usp.br
+Agradecimento:
+    Professor muito obrigado pelo semestre, foi muito mais fácil aprender a matéria, principalmente da forma que o senhor nos apresentou. Também queria lhe agradecer por ser paciente e educado, acho que graças à isso pude aprender mais com a matéria e ter interese nela, antes eu tinha um certo preconceito em relação à CG, mas depois dessas aulas pude me divertir com a matéria. Por fim, muito obrigado por ter me ajudado muito ao longo do semestre e novamente agradeço pela paciência.
