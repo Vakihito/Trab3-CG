@@ -446,6 +446,8 @@ def desenha_lamp(angle=0.0,
     kd = 1 # coeficiente de reflexao difusa do modelo
     ks = 1 # coeficiente de reflexao especular do modelo
     ns = 1000.0 # expoente de reflexao especular
+    if tecla_l_hit:
+        (ka, kd, ks, ns) = (0.1, 0.0, 0.0, 1.0)
     
     loc_ka = glGetUniformLocation(program, "ka_i") # recuperando localizacao da variavel ka na GPU
     glUniform1f(loc_ka, ka) ### envia ka pra gpu
@@ -600,6 +602,54 @@ def desenhaI(angle=0.0,
     # desenha o modelo
     glDrawArrays(GL_TRIANGLES, vertices_dict[modelDir][0], vertices_dict[modelDir][1] - vertices_dict[modelDir][0]) ## renderizando
 
+
+def desenha_cottage(angle=0.0, 
+            r_x=0.0, r_y=0.0, r_z=1.0,
+            t_x=0.0, t_y=0.0, t_z=0.0,
+            s_x=1.0, s_y=1.0, s_z=1.0,
+            ka=0.8, kd=0.25, ks=0.2, ns= 32.0,
+            modelDir=""):
+    mat_model = model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
+    loc_model = glGetUniformLocation(program, "model")
+    glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
+
+    #### define parametros de ilumincao do modelo
+    (ka, kd, ks) = sum_k(ka, kd, ks)
+    if tecla_l_hit:
+        (ka, kd, ks) = (0.1, 0.0, 0.0)
+    set_zero_e()
+    
+    loc_ka = glGetUniformLocation(program, "ka_i") # recuperando localizacao da variavel ka na GPU
+    glUniform1f(loc_ka, ka) ### envia ka pra gpu
+    
+    loc_kd = glGetUniformLocation(program, "kd_i") # recuperando localizacao da variavel kd na GPU
+    glUniform1f(loc_kd, kd) ### envia kd pra gpu    
+
+    loc_ks = glGetUniformLocation(program, "ks_i") # recuperando localizacao da variavel ks na GPU
+    glUniform1f(loc_ks, ks) ### envia ks pra gpu        
+    
+    loc_ns = glGetUniformLocation(program, "ns_i") # recuperando localizacao da variavel ns na GPU
+    glUniform1f(loc_ns, ns) ### envia ns pra gpu        
+
+    loc_ka1 = glGetUniformLocation(program, "ka_e") # recuperando localizacao da variavel ka na GPU
+    glUniform1f(loc_ka1, ka) ### envia ka pra gpu
+    
+    loc_kd2 = glGetUniformLocation(program, "kd_e") # recuperando localizacao da variavel kd na GPU
+    glUniform1f(loc_kd2, kd) ### envia kd pra gpu    
+
+    loc_ks3 = glGetUniformLocation(program, "ks_e") # recuperando localizacao da variavel ks na GPU
+    glUniform1f(loc_ks3, ks) ### envia ks pra gpu        
+    
+    loc_ns4 = glGetUniformLocation(program, "ns_e") # recuperando localizacao da variavel ns na GPU
+    glUniform1f(loc_ns4, ns) ### envia ns pra gpu      
+
+
+    
+    #define id da textura do modelo
+    glBindTexture(GL_TEXTURE_2D, vertices_dict[modelDir][2])
+    # desenha o modelo
+    glDrawArrays(GL_TRIANGLES, vertices_dict[modelDir][0], vertices_dict[modelDir][1] - vertices_dict[modelDir][0]) ## renderizando
+
 def desenhaE(angle=0.0, 
             r_x=0.0, r_y=0.0, r_z=1.0,
             t_x=0.0, t_y=0.0, t_z=0.0,
@@ -665,6 +715,9 @@ def desenhaM2I(angle=0.0,
     glBindTexture(GL_TEXTURE_2D, vertices_dict[modelDir][2])
     # desenha o modelo
     glDrawArrays(GL_TRIANGLES, vertices_dict[modelDir][0], vertices_dict[modelDir][1] - vertices_dict[modelDir][0]) ## renderizando
+
+
+
 
 def desenhaM2E(angle=0.0, 
             r_x=0.0, r_y=0.0, r_z=1.0,
@@ -1035,7 +1088,7 @@ while not glfw.window_should_close(window):
     desenhaI(s_x=6, s_y=6, s_z=6, t_x = -14,t_z= 13, ka= 1.0,kd=0.0, ks=0.0,modelDir="floor")    
     desenha_chair(s_x=0.04, s_y=0.04, s_z=0.04,t_x =-4 ,t_z=-20, kd=0.5, ks=0.0 ,modelDir="chair");
     desenhaM2I(angle=-90,r_x=1.0 ,r_z=0.0,s_x=0.05, s_y=0.05, s_z=0.05,t_x=0.0,kd=0.7,modelDir="beagle")
-    desenhaI(s_x=3.58, s_y=5, s_z=4,t_x= -0.7, t_y = -2,t_z= -8, ks=0.0, modelDir="cottage")
+    desenha_cottage(s_x=3.58, s_y=5, s_z=4,t_x= -0.7, t_y = -2,t_z= -8,ka=0.4,kd=0.2 , ks=0.0, modelDir="cottage")
     desenhaM2I(angle=-90, r_y=1.0 ,r_z=0.0, s_x=0.013, s_y=0.013, s_z=0.013, t_y= 3, t_x=18, t_z=-18,ka=1.0,kd=0.5, ks=0.3 ,modelDir="table1")
     desenha_sofa(s_x=0.05, s_y=0.05, s_z=0.05, t_x=-17, t_y = 4,t_z=-22, ka=0.8, kd=0.3, ks=0.0 ,modelDir="sofa")
     desenhaI(s_x=2, s_y=0.5, s_z=2, t_x=-13.5, t_z = -14, ka=0.95 ,kd=0.0, ks=1.0 , ns=36.0, modelDir="stool")
