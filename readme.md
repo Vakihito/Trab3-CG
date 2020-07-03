@@ -23,7 +23,7 @@ obs : a tecla "i" entre no modo polígono, as teclas "1" e "2", regulam o ka, "3
 Vídeo :
     O vídeo não ficou muito bom porque meu computador não é dos melhores. Desta forma, ao rodar o programa e gravar meu computador não aguentou, desculpa... Porém creio que quando o senhor rodar em seu computador irá funcionar melhor, pelo menos quando não estou gravando o programa funciona melhor. 
     Segue o link para o vídeo :
-    https://www.youtube.com/watch?v=6v-fEJR-SuI&feature=youtu.be
+    https://youtu.be/kQxG515AaEo
 
 
 
