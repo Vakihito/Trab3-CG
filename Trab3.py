@@ -72,7 +72,7 @@ fragment_code = """
         // parametro com a cor da(s) fonte(s) de iluminacao
         vec3 lightColor = vec3(1.0, 1.0, 1.0);
 
-        uniform vec3 lightColor2 = vec3(0.0, 0.0, 1.0); // define coordenadas de posicao da luz #2
+        uniform vec3 lightColor2 = vec3(0.0, 0.0, 0.0); // define coordenadas de posicao da luz #2
 
 
         // parametros recebidos do vertex shader
@@ -536,6 +536,7 @@ def desenha_sun(angle=0.0,
     glDrawArrays(GL_TRIANGLES, vertices_dict[modelDir][0], vertices_dict[modelDir][1] - vertices_dict[modelDir][0]) ## renderizando
 
 from random import randint
+from time import time
 
 def desenha_lamp3(angle=0.0, 
             r_x=0.0, r_y=0.0, r_z=1.0,
@@ -1005,11 +1006,13 @@ ka_add = 0.0
 kd_add = 0.0
 ks_add = 0.0
 
-tecla_l_hit = False;
+tecla_l_hit = False
+tecla_m_hit = False
+
 
 def key_event(window,key,scancode,action,mods):
     global cameraPos, cameraFront, cameraUp, polygonal_mode
-    global ka_add, kd_add, ks_add, tecla_l_hit
+    global ka_add, kd_add, ks_add, tecla_l_hit, tecla_m_hit
 
     loc_light_pos = glGetUniformLocation(program, "lightPos1") # recuperando localizacao da variavel lightPos na GPU
     print(key)
@@ -1034,16 +1037,24 @@ def key_event(window,key,scancode,action,mods):
     print("ka : " , ka_add)
     print("kd : " , kd_add)
     print("ks : " , ks_add)
+    print(key)
 
-    if key == 85 and (action==1 or action==2): # tecla u
+    if key == 85 and (action==1 or action==2) and ka_add < 1.0: # tecla u
         ka_add  += 0.01
-    if key == 80 and (action==1 or action==2): # tecla p
+    if key == 80 and (action==1 or action==2) and ka_add > -1.0: # tecla p
         ka_add -= 0.01
     
     if key == 76 and (action==1 or action==2) and not tecla_l_hit: # tecla l
         tecla_l_hit = True;
     elif key == 76 and (action==1 or action==2) and tecla_l_hit: # tecla l
         tecla_l_hit = False;
+
+    if key == 77 and (action==1 or action==2) and not tecla_m_hit: # tecla m
+        tecla_m_hit = True
+    elif key == 77 and (action==1 or action==2) and tecla_m_hit: # tecla m
+        tecla_m_hit = False;
+        loc_light_color = glGetUniformLocation(program, "lightColor2") # recuperando localizacao da variavel lightPos na GPU
+        glUniform3f(loc_light_color, 0, 0, 0)
 
 
     cameraSpeed = 1.0
@@ -1206,7 +1217,8 @@ whale_position = 40
 anglePlane = 0.0
 sun_angle = 0.0
 monstro_dance = 0.02
-
+last_time = 0.0
+rmonster = 0.0
 
 
 glfw.show_window(window)
@@ -1312,22 +1324,37 @@ while not glfw.window_should_close(window):
     
 
     
-    # desenha container
-    desenhaM2IC( s_z=0.76,s_y=0.65,s_x=0.76, t_y=5.5,t_x=5 , t_z= -100 ,ka=0.3 ,kd=1.0, ks=1.0, ns=5 ,modelDir="container")
-    desenhaM2E( s_z=0.8,s_y=0.7,s_x=0.8, t_y=5.5,t_x=5 , t_z= -100 ,kd=0.8, ks=1.0, ns=10 , modelDir="container")
-    if monstro_dance > 0:
-        monstro_dance = -0.02
+    # desenha container if m is hit
+    if tecla_m_hit :
+        
+
+        desenhaM2IC( s_z=0.73,s_y=0.68,s_x=0.76, t_y=4.8,t_x=5.2 , t_z= -99.3 ,ka=0.3 ,kd=1.0, ks=1.0, ns=5 ,modelDir="container")
+        desenhaM2E( s_z=0.8,s_y=0.7,s_x=0.8, t_y=5.5,t_x=5 , t_z= -100 ,kd=0.7, ks=1.0, ns=40 , modelDir="container")
+
+        if time() - last_time > 0.1:
+            if monstro_dance > 0:
+                monstro_dance = -0.02
+            else :
+                monstro_dance = 0.02
+            rmonster = randint(-30,30)
+            last_time = time()
+
+        desenhaM2IC(angle=-30 + rmonster, r_y=1.0,r_z=0.0,s_z=0.5 + monstro_dance,s_y=0.5 - monstro_dance,s_x=0.5 + monstro_dance, t_y=-1.0,t_x=-2 , t_z= -90 ,ka=1.0,kd=1.0, ks=1.0, modelDir="librarian")
+        desenhaM2IC(angle= 0 + rmonster, r_y=1.0,r_z=0.0, s_z=0.5 - monstro_dance,s_y=0.5 + monstro_dance,s_x=0.5 - monstro_dance, t_y=-1.0,t_x=12, t_z= -90 , ka=1.0, kd=1.0,ks= 1.0 , modelDir="librarian2")
+
+        desenhaM2IC( s_z=2,s_y=1.2,s_x=3, t_y=0.0,t_x=5 , t_z= -90 ,ka=1.0,kd=1.0, ks=1.0, modelDir="caixa2")
+        desenhaM2IC(angle=-90 + rmonster,r_y=1.0,r_z=0.0, s_z=1.3 + monstro_dance ,s_y=1.3 + monstro_dance,s_x=1.3 + monstro_dance, t_y=1.5,t_x=4.5, t_z= -91 ,ka=1.0, kd=1.0, ks= 1.0 ,modelDir="monstro")
+        
+
+        desenha_lamp3(t_y=11.3,t_x=5.2, t_z= -91, modelDir="luz")    
     else :
-        monstro_dance = 0.02
+        desenhaM2E( s_z=0.8,s_y=0.7,s_x=0.8, t_y=5.5,t_x=5 , t_z= -100 , kd=0.7, ks=1.0, ns=40.0, modelDir="container")
+        desenhaM2E( s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=-2 , t_z= -90 ,ka=1.0,kd=0.3, modelDir="librarian")
+        desenhaM2E( s_z=2,s_y=1.2,s_x=3, t_y=0.0,t_x=5 , t_z= -90 ,ka=1.0,kd=0.3, modelDir="caixa2")
+        desenhaM2E(angle=-90,r_y=1.0,r_z=0.0, s_z=1.3,s_y=1.3,s_x=1.3, t_y=1.5,t_x=4.5, t_z= -91 ,ka=1.0,kd=0.3, modelDir="monstro")
+        desenhaM2E(angle=180,r_y=1.0,r_z=0.0, s_z=0.5,s_y=0.5,s_x=0.5, t_y=-1.0,t_x=12, t_z= -90 , ka=1.0, kd=0.3, modelDir="librarian")
 
-    desenhaM2IC(angle=-30 + randint(-30,30), r_y=1.0,r_z=0.0,s_z=0.5 + monstro_dance,s_y=0.5 - monstro_dance,s_x=0.5 + monstro_dance, t_y=-1.0,t_x=-2 , t_z= -90 ,ka=1.0,kd=1.0, ks=1.0, modelDir="librarian")
-    desenhaM2IC(angle= 0 + randint(-30,30), r_y=1.0,r_z=0.0, s_z=0.5 - monstro_dance,s_y=0.5 + monstro_dance,s_x=0.5 - monstro_dance, t_y=-1.0,t_x=12, t_z= -90 , ka=1.0, kd=1.0,ks= 1.0 , modelDir="librarian2")
-
-    desenhaM2IC( s_z=2,s_y=1.2,s_x=3, t_y=0.0,t_x=5 , t_z= -90 ,ka=1.0,kd=1.0, ks=1.0, modelDir="caixa2")
-    desenhaM2IC(angle=-90 + randint(-30,30),r_y=1.0,r_z=0.0, s_z=1.3 + monstro_dance ,s_y=1.3 + monstro_dance,s_x=1.3 + monstro_dance, t_y=1.5,t_x=4.5, t_z= -91 ,ka=1.0, kd=1.0, ks= 1.0 ,modelDir="monstro")
-
-    desenha_lamp3(t_y=12,t_x=5.2, t_z= -91, modelDir="luz")    
-
+    
 
     # Faz a bola quicar
     if ball_position > 3:

@@ -1,7 +1,7 @@
 Aluno : Victor Akihito Kamada Tomita - 10692082
  
 Para rodar o programa utilize o seguinte comando :
-        python3 Trab3-2.py
+        python3 Trab3.py
  
  
  
@@ -21,11 +21,11 @@ obs : a tecla "i" entre no modo polígono, as teclas "1" e "2", regulam o ka, "3
  
 Vídeo :
     Desculpa, mas gravei com o celular a tela do computador porque meu computador não aguentava executar o programa e o gravador de vídeo :
-    https://youtu.be/Hz0kpaKl9Ys
+    https://youtu.be/cfkdYW8cjHA    
     Mas, caso o senhor queira ver o vídeo gravado pelo capturador de tela, o vídeo não ficou muito bom porque meu computador não é dos melhores. Desta forma, ao rodar o programa e gravar meu computador não aguentou, desculpa... 
     Porém creio que quando o senhor rodar em seu computador irá funcionar melhor, pelo menos quando não estou gravando o programa funciona melhor. 
     Segue o link para o vídeo com gravador de tela :
-    https://youtu.be/iWGB2no4pWY
+    https://youtu.be/QFIxYOg8spo
  
  
  
