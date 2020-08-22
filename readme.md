@@ -31,20 +31,14 @@ Vídeo :<br>
     Desculpa, mas gravei com o celular a tela do computador porque meu computador não aguentava executar o programa e o gravador de vídeo :
     https://youtu.be/cfkdYW8cjHA
     <br>
-    
     Mas, caso o senhor queira ver o vídeo gravado pelo capturador de tela, o vídeo não ficou muito bom porque meu computador não é dos melhores. Desta forma, ao rodar o programa e gravar meu computador não aguentou, desculpa... 
     <br>
-    
     Porém creio que quando o senhor rodar em seu computador irá funcionar melhor, pelo menos quando não estou gravando o programa funciona melhor. 
     Segue o link para o vídeo com gravador de tela :
     https://youtu.be/QFIxYOg8spo
- 
- 
 <br>
 <br>
 <br>
- 
- 
 Agradecimento:
     Professor muito obrigado pelo semestre, foi muito mais fácil aprender a matéria, principalmente da forma que o senhor nos apresentou. Também queria lhe agradecer por ser paciente e educado, acho que graças à isso pude aprender mais com a matéria e ter interesse nela, antes eu tinha um certo preconceito em relação à CG, mas depois dessas aulas pude me divertir com a matéria. Por fim, muito obrigado por ter me ajudado muito ao longo do semestre e novamente agradeço pela paciência.
  
