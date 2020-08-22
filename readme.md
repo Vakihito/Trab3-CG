@@ -39,7 +39,7 @@ Vídeo :<br>
 <br>
 <br>
 <br>
-Agradecimento:
-    Professor muito obrigado pelo semestre, foi muito mais fácil aprender a matéria, principalmente da forma que o senhor nos apresentou. Também queria lhe agradecer por ser paciente e educado, acho que graças à isso pude aprender mais com a matéria e ter interesse nela, antes eu tinha um certo preconceito em relação à CG, mas depois dessas aulas pude me divertir com a matéria. Por fim, muito obrigado por ter me ajudado muito ao longo do semestre e novamente agradeço pela paciência.
+Agradecimento: <br>
+<p>    Professor muito obrigado pelo semestre, foi muito mais fácil aprender a matéria, principalmente da forma que o senhor nos apresentou. Também queria lhe agradecer por ser paciente e educado, acho que graças à isso pude aprender mais com a matéria e ter interesse nela, antes eu tinha um certo preconceito em relação à CG, mas depois dessas aulas pude me divertir com a matéria. Por fim, muito obrigado por ter me ajudado muito ao longo do semestre e novamente agradeço pela paciência.</p>
  
 
