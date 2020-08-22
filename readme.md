@@ -1,13 +1,16 @@
-Aluno : Victor Akihito Kamada Tomita - 10692082
- 
-Para rodar o programa utilize o seguinte comando :
-        python3 Trab3.py
- 
+Aluno : Victor Akihito Kamada Tomita - 10692082<br>
+<br>
+Para rodar o programa utilize o seguinte comando : <br>
+       <code>python3 Trab3.py</code>
+<br>
+<br>
+<br>
  
  
 Em relação aos requisitos do trabalho :
-    1) OK
-    2) A fonte de luz externa é a lua
+<ul>
+    <li>1) OK </li>
+    <li>2) A fonte de luz externa é a lua <br>
     3) OK
     4) OK
     5) A luz fonte é tipo uma lâmpada
@@ -16,6 +19,7 @@ Em relação aos requisitos do trabalho :
     8) OK
     9) OK
     10) É mais notório pelo céu, pela chão da casa, pela TV e pela mesa. Mas em outros modelos isso também é perceptível, como no container, na baleia e no golfinho.
+</ul>
 obs : a tecla "i" entre no modo polígono, as teclas "1" e "2", regulam o ka, "3" e "4", regulam o kd, e as teclas "5" e "6" regulam o ks. Talvez o programa fique um pouco travado, porque há muitos modelos sendo carregados e desenhados. Qualquer problema meu e-mail é : akihito012@usp.br.
  
  
